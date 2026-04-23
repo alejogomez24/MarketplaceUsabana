@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Producto — Sabana Market</title>
+  <script src="shared.js"></script>
+</head>
+<body>
+<nav id="nav"></nav>
+
+<!-- BREADCRUMB -->
+<div style="background:#fff;border-bottom:1px solid var(--border);">
+  <div class="container" style="padding-top:12px;padding-bottom:12px;">
+    <div id="breadcrumb" style="font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;"></div>
+  </div>
+</div>
+
+<div class="container" style="padding-top:40px;padding-bottom:80px;">
+  <div id="product-content"></div>
+</div>
+
+<!-- RELATED PRODUCTS -->
+<section style="background:#fff;padding:56px 0;">
+  <div class="container">
+    <h2 class="section-title" style="margin-bottom:28px;">Productos relacionados</h2>
+    <div class="grid-4" id="related-grid"></div>
+  </div>
+</section>
+
+<!-- CHAT MODAL -->
+<div id="chat-modal" class="modal-overlay" style="display:none;">
+  <div class="modal" style="max-width:460px;">
+    <div class="modal-header">
+      <div class="modal-title" id="chat-modal-title">Chat con vendedor</div>
+      <button class="modal-close" onclick="closeChatModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="chat-seller-info" style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg);border-radius:8px;margin-bottom:16px;"></div>
+      <div class="chat-messages" id="chat-messages"></div>
+      <div class="chat-input-row">
+        <input type="text" class="chat-input" id="chat-input" placeholder="Escribe un mensaje..." onkeydown="if(event.key==='Enter')sendChatMsg()">
+        <button class="btn btn-primary" onclick="sendChatMsg()">Enviar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer id="footer"></footer>
+
+<style>
+.product-layout { display: grid; grid-template-columns: 1fr 380px; gap: 48px; align-items: start; }
+.product-gallery { position: sticky; top: calc(var(--nav-h) + 20px); }
+.product-main-img { background: var(--bg); border-radius: 16px; height: 380px; display: flex; align-items: center; justify-content: center; font-size: 120px; margin-bottom: 16px; border: 1px solid var(--border); }
+.product-thumbs { display: flex; gap: 10px; }
+.product-thumb { width: 72px; height: 72px; border-radius: 10px; background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 32px; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s; }
+.product-thumb.active { border-color: var(--blue-mid); }
+.product-thumb:hover { border-color: var(--blue-light); }
+
+.product-info h1 { font-size: 30px; color: var(--blue-dark); margin-bottom: 12px; line-height: 1.25; }
+.product-price-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px; }
+.product-price { font-size: 36px; font-weight: 700; color: var(--blue-dark); }
+.product-price-old { font-size: 18px; color: var(--muted); text-decoration: line-through; }
+.product-discount { background: #FFF0F0; color: #C0392B; font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+
+.product-meta-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+
+.product-desc { font-size: 15px; color: var(--text); line-height: 1.7; margin-bottom: 28px; }
+
+.product-action-btns { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+
+/* Seller card */
+.seller-card { background: var(--bg); border-radius: 12px; padding: 20px; border: 1px solid var(--border); margin-bottom: 32px; }
+.seller-card-top { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.seller-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--blue-dark); display: flex; align-items: center; justify-content: center; font-size: 26px; }
+.seller-name { font-weight: 700; font-size: 16px; color: var(--blue-dark); cursor: pointer; }
+.seller-name:hover { text-decoration: underline; }
+.seller-career { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.seller-stats { display: flex; gap: 20px; }
+.seller-stat { text-align: center; }
+.seller-stat-val { font-weight: 700; font-size: 18px; color: var(--blue-dark); }
+.seller-stat-label { font-size: 11px; color: var(--muted); }
+
+/* Reviews */
+.reviews-section { margin-top: 48px; }
+.review-item { padding: 20px 0; border-bottom: 1px solid var(--border); }
+.review-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.review-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.review-author { font-weight: 600; font-size: 14px; color: var(--text); }
+.review-date { font-size: 12px; color: var(--muted); margin-left: auto; }
+.review-text { font-size: 14px; color: var(--text); line-height: 1.6; }
+
+/* Star selector */
+.star-selector { display: flex; gap: 4px; }
+.star-selector span { font-size: 28px; cursor: pointer; color: #D0D5DD; transition: color 0.15s; }
+.star-selector span.on { color: #E5B800; }
+
+.add-cart-btn { background: var(--blue-dark); color: #fff; border: none; border-radius: 8px; padding: 8px 14px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: var(--font-sans); }
+.add-cart-btn:hover { background: var(--blue-mid); }
+
+@media(max-width:900px) {
+  .product-layout { grid-template-columns: 1fr; }
+  .product-gallery { position: static; }
+}
+</style>
+
+<script>
+initPage('product');
+document.getElementById('footer').innerHTML = renderFooter();
+
+const urlParams = new URLSearchParams(window.location.search);
+const productId = parseInt(urlParams.get('id')) || 1;
+const product = State.products.find(p => p.id === productId) || State.products[0];
+const seller = MOCK_USERS[product.sellerId];
+const user = State.user;
+let selectedThumb = 0;
+let reviewRating = 0;
+
+// Breadcrumb
+document.getElementById('breadcrumb').innerHTML = `
+  <a href="01_home.html" style="color:var(--muted);text-decoration:none;">Inicio</a>
+  <span>›</span>
+  <a href="02_listing.html" style="color:var(--muted);text-decoration:none;">Explorar</a>
+  <span>›</span>
+  <a href="02_listing.html?cat=${product.category}" style="color:var(--muted);text-decoration:none;">${CATEGORIES.find(c=>c.id===product.category)?.name||product.category}</a>
+  <span>›</span>
+  <span style="color:var(--text)">${product.title}</span>
+`;
+
+// Check if user bought this product
+const userOrders = State.orders;
+const hasBought = user && userOrders.some(o => o.productId === product.id);
+const discount = product.priceOld ? Math.round((1 - product.price / product.priceOld) * 100) : 0;
+
+// Product content
+document.getElementById('product-content').innerHTML = `
+<div class="product-layout fade-in">
+  <!-- Gallery -->
+  <div class="product-gallery">
+    <div class="product-main-img" id="main-img">
+      <span id="main-emoji">${product.images[0]}</span>
+    </div>
+    <div class="product-thumbs">
+      ${product.images.map((img, i) => `
+        <div class="product-thumb ${i===0?'active':''}" onclick="selectThumb(${i})" id="thumb-${i}">${img}</div>
+      `).join('')}
+    </div>
+  </div>
+
+  <!-- Info -->
+  <div class="product-info">
+    <div class="product-meta-row">
+      <span class="badge ${product.estado==='nuevo'?'badge-nuevo':'badge-usado'}">${product.estado==='nuevo'?'✓ Nuevo':'Usado'}</span>
+      <span class="badge badge-popular">${CATEGORIES.find(c=>c.id===product.category)?.name||product.category}</span>
+      ${product.badge ? `<span class="badge ${product.badge==='Oferta'?'badge-oferta':product.badge==='Nuevo'?'badge-nuevo':'badge-popular'}">${product.badge}</span>` : ''}
+    </div>
+    <h1>${product.title}</h1>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;">
+      ${renderStars(product.rating)}
+      <span style="font-size:15px;font-weight:600;color:var(--text)">${product.rating}</span>
+      <span style="font-size:13px;color:var(--muted)">(${product.reviews} reseñas)</span>
+    </div>
+    <div class="product-price-row">
+      <span class="product-price">${formatPrice(product.price)}</span>
+      ${product.priceOld ? `<span class="product-price-old">${formatPrice(product.priceOld)}</span><span class="product-discount">-${discount}%</span>` : ''}
+    </div>
+    <p class="product-desc">${product.description}</p>
+
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
+      <span style="font-size:13px;color:var(--muted);">Stock disponible:</span>
+      ${product.stock > 0
+        ? `<span style="font-weight:700;color:#1A7A3A">${product.stock} unidad${product.stock!==1?'es':''}</span>`
+        : `<span class="badge badge-agotado">Agotado</span>`}
+    </div>
+
+    <div class="product-action-btns">
+      ${product.stock > 0
+        ? `<button class="btn btn-primary btn-lg" onclick="addToCart()" id="add-cart-btn">🛒 Agregar al carrito</button>
+           <button class="btn btn-secondary btn-lg" onclick="openChatModal()">💬 Contactar vendedor</button>`
+        : `<button class="btn btn-lg" disabled style="background:#eee;color:#aaa;cursor:not-allowed;border:none;">
+             <span class="badge badge-agotado" style="font-size:14px;">Agotado</span> — No disponible
+           </button>
+           <button class="btn btn-secondary btn-lg" onclick="openChatModal()">💬 Preguntar al vendedor</button>`
+      }
+    </div>
+
+    <!-- Seller card -->
+    <div class="seller-card">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:14px;">Vendedor</div>
+      <div class="seller-card-top">
+        <div class="seller-avatar">${seller?.avatar||'👤'}</div>
+        <div style="flex:1">
+          <div class="seller-name" onclick="window.location.href='06_profile.html?id=${seller?.id}'">${seller?.name||'Vendedor'}</div>
+          <div class="seller-career">${seller?.career||''}</div>
+          <div style="margin-top:4px;">${renderStars(seller?.rating||4.5)} <span style="font-size:12px;color:var(--muted)">${seller?.rating||4.5}</span></div>
+        </div>
+      </div>
+      <div class="seller-stats">
+        <div class="seller-stat">
+          <div class="seller-stat-val">${seller?.sales||0}</div>
+          <div class="seller-stat-label">Ventas</div>
+        </div>
+        <div class="seller-stat">
+          <div class="seller-stat-val">${seller?.rating||4.5}★</div>
+          <div class="seller-stat-label">Reputación</div>
+        </div>
+        <div class="seller-stat">
+          <div class="seller-stat-val">${formatDate(seller?.joinDate||'2024-01-01').split(' de ')[2]||'2024'}</div>
+          <div class="seller-stat-label">Desde</div>
+        </div>
+      </div>
+      <button class="btn btn-secondary" style="width:100%;margin-top:16px;" onclick="openChatModal()">💬 Enviar mensaje</button>
+    </div>
+  </div>
+</div>
+
+<!-- REVIEWS -->
+<div class="reviews-section" id="reviews-section">
+  <h2 class="section-title" style="margin-bottom:8px;">Reseñas</h2>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:32px;">
+    ${renderStars(product.rating)}
+    <span style="font-size:22px;font-weight:700;color:var(--blue-dark)">${product.rating}</span>
+    <span style="font-size:14px;color:var(--muted)">${product.reviews} valoraciones</span>
+  </div>
+  <div id="reviews-list"></div>
+
+  ${hasBought ? `
+  <div style="margin-top:32px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:24px;">
+    <h3 style="font-size:18px;font-weight:700;color:var(--blue-dark);margin-bottom:16px;">Deja tu reseña</h3>
+    <div style="margin-bottom:16px;">
+      <div style="font-size:13px;font-weight:600;margin-bottom:8px;">Calificación</div>
+      <div class="star-selector" id="star-selector">
+        <span onclick="setRating(1)">★</span>
+        <span onclick="setRating(2)">★</span>
+        <span onclick="setRating(3)">★</span>
+        <span onclick="setRating(4)">★</span>
+        <span onclick="setRating(5)">★</span>
+      </div>
+    </div>
+    <textarea id="review-text" class="form-input" placeholder="Cuéntanos tu experiencia con este producto o servicio..." style="min-height:90px;margin-bottom:12px;"></textarea>
+    <button class="btn btn-primary" onclick="submitReview()">Publicar reseña</button>
+  </div>
+  ` : user ? `
+  <div style="margin-top:24px;background:var(--bg);border-radius:10px;padding:16px 20px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:10px;">
+    <span>🔒</span> Solo puedes reseñar productos que hayas comprado
+  </div>
+  ` : ''}
+</div>`;
+
+// Render reviews
+const reviews = (MOCK_REVIEWS[product.id] || []);
+document.getElementById('reviews-list').innerHTML = reviews.length === 0
+  ? `<div style="color:var(--muted);font-size:14px;padding:16px 0;">Aún no hay reseñas para este producto.</div>`
+  : reviews.map(r => `
+    <div class="review-item">
+      <div class="review-header">
+        <div class="review-avatar">${r.avatar}</div>
+        <div>
+          <div class="review-author">${r.userName}</div>
+          <div>${renderStars(r.rating)}</div>
+        </div>
+        <div class="review-date">${formatDate(r.date)}</div>
+      </div>
+      <div class="review-text">${r.comment}</div>
+    </div>
+  `).join('');
+
+// Related products
+const related = State.products.filter(p => p.id !== product.id && (p.category === product.category || p.sellerId === product.sellerId)).slice(0, 4);
+document.getElementById('related-grid').innerHTML = related.map(p => `
+  <div class="card product-card" onclick="window.location.href='03_product.html?id=${p.id}'">
+    <div class="product-card-img" style="background:${p.bg}"><span style="font-size:56px">${p.emoji}</span></div>
+    <div class="product-card-body">
+      <div class="product-card-title">${p.title}</div>
+      <div class="product-card-price">${formatPrice(p.price)}</div>
+      <div class="product-card-footer">
+        <div class="product-card-rating">${renderStars(p.rating)}</div>
+        <button class="add-cart-btn" onclick="event.stopPropagation();quickAddToCart(${p.id})">${p.stock===0?'Agotado':'+ Carrito'}</button>
+      </div>
+    </div>
+  </div>
+`).join('');
+
+// Thumb select
+function selectThumb(i) {
+  selectedThumb = i;
+  document.getElementById('main-emoji').textContent = product.images[i];
+  document.querySelectorAll('.product-thumb').forEach((t, j) => t.classList.toggle('active', j === i));
+}
+
+// Cart
+function addToCart() {
+  if (!State.user) { showToast('Inicia sesión para agregar al carrito', 'warning'); return; }
+  State.addToCart(product, 1);
+  showToast(`"${product.title}" agregado al carrito 🛒`, 'success');
+  const btn = document.getElementById('add-cart-btn');
+  if (btn) { btn.textContent = '✅ Agregado'; setTimeout(() => btn.textContent = '🛒 Agregar al carrito', 2000); }
+}
+
+function quickAddToCart(id) {
+  const p = State.products.find(x => x.id === id);
+  if (!p) return;
+  if (!State.user) { showToast('Inicia sesión para agregar al carrito', 'warning'); return; }
+  State.addToCart(p, 1);
+  showToast(`"${p.title}" agregado 🛒`, 'success');
+}
+
+// Chat modal
+function openChatModal() {
+  if (!State.user) { showToast('Inicia sesión para contactar al vendedor', 'warning'); window.location.href = '05_login.html'; return; }
+  document.getElementById('chat-modal-title').textContent = `Chat — ${product.title}`;
+  document.getElementById('chat-seller-info').innerHTML = `
+    <div style="font-size:28px">${seller?.avatar||'👤'}</div>
+    <div><div style="font-weight:700;font-size:14px">${seller?.name}</div><div style="font-size:12px;color:var(--muted)">${seller?.career}</div></div>
+    <div style="margin-left:auto;font-size:12px;color:#1A7A3A">● En línea</div>`;
+  const chatKey = `${State.user.id}_${product.sellerId}`;
+  const history = CHAT_HISTORY[chatKey] || [];
+  renderChatMessages(history);
+  document.getElementById('chat-modal').style.display = 'flex';
+  setTimeout(() => document.getElementById('chat-input').focus(), 100);
+}
+
+function closeChatModal() { document.getElementById('chat-modal').style.display = 'none'; }
+
+function renderChatMessages(msgs) {
+  const container = document.getElementById('chat-messages');
+  container.innerHTML = msgs.map(m => `
+    <div class="chat-msg ${m.from === (State.user?.id||99) ? 'mine' : 'theirs'}">
+      ${m.text}
+      <div class="chat-time">${m.time}</div>
+    </div>
+  `).join('');
+  container.scrollTop = container.scrollHeight;
+}
+
+function sendChatMsg() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const chatKey = `${State.user?.id||99}_${product.sellerId}`;
+  const history = CHAT_HISTORY[chatKey] || [];
+  const now = new Date();
+  history.push({ from: State.user?.id||99, text, time: `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}` });
+  CHAT_HISTORY[chatKey] = history;
+  renderChatMessages(history);
+  input.value = '';
+  State.addNotification(`Mensaje enviado a ${seller?.name}`, 'message');
+
+  // Simulate reply
+  setTimeout(() => {
+    const replies = ['¡Claro! Con mucho gusto te ayudo.', '¿Cuándo te gustaría coordinar?', 'El producto sigue disponible.', '¡Perfecto! Podemos quedar mañana.'];
+    history.push({ from: product.sellerId, text: replies[Math.floor(Math.random()*replies.length)], time: `${now.getHours()}:${String(now.getMinutes()+1).padStart(2,'0')}` });
+    CHAT_HISTORY[chatKey] = history;
+    renderChatMessages(history);
+    State.addNotification(`${seller?.name} respondió tu mensaje`, 'message');
+  }, 1500);
+}
+
+// Reviews
+function setRating(r) {
+  reviewRating = r;
+  document.querySelectorAll('.star-selector span').forEach((s, i) => s.classList.toggle('on', i < r));
+}
+
+function submitReview() {
+  if (!reviewRating) { showToast('Selecciona una calificación', 'warning'); return; }
+  const text = document.getElementById('review-text').value.trim();
+  if (!text) { showToast('Escribe un comentario', 'warning'); return; }
+  if (!MOCK_REVIEWS[product.id]) MOCK_REVIEWS[product.id] = [];
+  MOCK_REVIEWS[product.id].unshift({ userId: user.id, userName: user.name, avatar: user.avatar, rating: reviewRating, comment: text, date: new Date().toISOString().split('T')[0] });
+  showToast('¡Reseña publicada exitosamente! ⭐', 'success');
+  State.addNotification('Tu reseña fue publicada', 'review');
+  setTimeout(() => window.location.reload(), 1000);
+}
+
+// Close modal on overlay click
+document.getElementById('chat-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeChatModal();
+});
+</script>
+</body>
+</html>

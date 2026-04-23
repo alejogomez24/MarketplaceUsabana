@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabana Market — Inicio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <script src="shared.js"></script>
+</head>
+<body>
+<nav id="nav"></nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner container">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Marketplace Institucional</div>
+      <h1 class="hero-title">Compra y vende dentro<br>de <em>La Sabana</em></h1>
+      <p class="hero-desc">El espacio seguro de la comunidad estudiantil para intercambiar libros, tutorías, servicios y más — solo con correo @unisabana.edu.co</p>
+      <div class="hero-search-wrap">
+        <input type="text" id="hero-search" placeholder="¿Qué estás buscando?" class="hero-search-input">
+        <button class="hero-search-btn btn btn-gold-solid" onclick="goSearch()">Buscar</button>
+      </div>
+      <div class="hero-tags">
+        <span onclick="goSearch('Cálculo')">📘 Cálculo</span>
+        <span onclick="goSearch('tutoria')">🎓 Tutorías</span>
+        <span onclick="goSearch('laboratorio')">🧪 Lab</span>
+        <span onclick="goSearch('diseño')">✏️ Diseño</span>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-num" data-target="247">0</div>
+        <div class="stat-label">Productos activos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" data-target="1340">0</div>
+        <div class="stat-label">Estudiantes registrados</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" data-target="98">0</div>
+        <div class="stat-label">% satisfacción</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">Explorar por categoría</h2>
+    <p class="section-sub">Todo lo que necesitas para tu semestre en un solo lugar</p>
+    <div class="categories-grid" id="categories-grid"></div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="section" style="background:#fff; padding: 64px 0;">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Productos destacados</h2>
+        <p class="section-sub">Lo más reciente y popular de la comunidad</p>
+      </div>
+      <a href="02_listing.html" class="btn btn-secondary">Ver todos →</a>
+    </div>
+    <div class="grid-4" id="products-grid"></div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="section">
+  <div class="container">
+    <div class="cta-banner">
+      <div class="cta-text">
+        <h2>¿Tienes algo que vender o<br><em>un servicio que ofrecer?</em></h2>
+        <p>Publica gratis en menos de 2 minutos y llega a más de 1.300 estudiantes de La Sabana</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <button class="btn btn-gold-solid btn-lg" onclick="window.location.href='07_publish.html'">✨ Publicar ahora</button>
+          <button class="btn btn-secondary btn-lg" style="border-color:rgba(255,255,255,0.4);color:#fff;" onclick="window.location.href='02_listing.html'">Explorar mercado</button>
+        </div>
+      </div>
+      <div class="cta-illo">
+        <div class="cta-float f1">📚</div>
+        <div class="cta-float f2">💰</div>
+        <div class="cta-float f3">🎓</div>
+        <div class="cta-float f4">⭐</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RECENT SERVICES -->
+<section class="section" style="background:#fff;padding:64px 0;">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Servicios recientes</h2>
+        <p class="section-sub">Estudiantes ofreciendo sus talentos</p>
+      </div>
+      <a href="02_listing.html?cat=servicios" class="btn btn-secondary">Ver servicios →</a>
+    </div>
+    <div class="grid-3" id="services-grid"></div>
+  </div>
+</section>
+
+<footer id="footer"></footer>
+
+<style>
+/* Hero */
+#hero { background: linear-gradient(135deg, #1A3A6B 0%, #2C5FA8 60%, #1A3A6B 100%); padding: 80px 0 64px; overflow: hidden; position: relative; }
+#hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(201,168,76,0.12) 0%, transparent 60%); }
+.hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; position: relative; z-index: 1; }
+.hero-eyebrow { display: inline-block; background: rgba(201,168,76,0.2); color: var(--gold-light); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 5px 14px; border-radius: 20px; margin-bottom: 16px; border: 1px solid rgba(201,168,76,0.3); }
+.hero-title { font-size: 52px; color: #fff; line-height: 1.1; margin-bottom: 16px; }
+.hero-title em { color: var(--gold-light); }
+.hero-desc { color: rgba(255,255,255,0.75); font-size: 16px; line-height: 1.7; margin-bottom: 28px; max-width: 460px; }
+.hero-search-wrap { display: flex; gap: 0; margin-bottom: 20px; max-width: 480px; }
+.hero-search-input { flex: 1; padding: 14px 20px; border: none; border-radius: 10px 0 0 10px; font-family: var(--font-sans); font-size: 15px; outline: none; }
+.hero-search-btn { border-radius: 0 10px 10px 0; padding: 14px 24px; font-size: 15px; }
+.hero-tags { display: flex; gap: 10px; flex-wrap: wrap; }
+.hero-tags span { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); font-size: 13px; padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: background 0.2s; border: 1px solid rgba(255,255,255,0.15); }
+.hero-tags span:hover { background: rgba(255,255,255,0.2); }
+
+/* Stats */
+.hero-stats { display: flex; flex-direction: column; gap: 16px; }
+.stat-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 24px 28px; backdrop-filter: blur(8px); transition: transform 0.2s; }
+.stat-card:hover { transform: translateX(4px); }
+.stat-num { font-size: 42px; font-weight: 700; color: var(--gold-light); line-height: 1; font-family: var(--font-sans); }
+.stat-label { font-size: 13px; color: rgba(255,255,255,0.65); margin-top: 4px; }
+
+/* Categories */
+.categories-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+.cat-card { border-radius: var(--radius); padding: 28px 20px; text-align: center; cursor: pointer; transition: transform 0.22s, box-shadow 0.22s; border: 1px solid var(--border); }
+.cat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.cat-icon { font-size: 48px; margin-bottom: 12px; display: block; }
+.cat-name { font-weight: 700; font-size: 15px; color: var(--blue-dark); margin-bottom: 4px; }
+.cat-count { font-size: 12px; color: var(--muted); }
+
+/* Section header */
+.section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 32px; }
+
+/* Product card add btn */
+.add-cart-btn { background: var(--blue-dark); color: #fff; border: none; border-radius: 8px; padding: 8px 14px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: var(--font-sans); }
+.add-cart-btn:hover { background: var(--blue-mid); }
+
+/* CTA Banner */
+.cta-banner { background: linear-gradient(135deg, #1A3A6B 0%, #2C5FA8 100%); border-radius: 20px; padding: 56px 64px; display: flex; align-items: center; justify-content: space-between; gap: 40px; overflow: hidden; position: relative; }
+.cta-banner::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 50%, rgba(201,168,76,0.15) 0%, transparent 55%); }
+.cta-text { position: relative; z-index: 1; }
+.cta-text h2 { font-size: 38px; color: #fff; margin-bottom: 14px; }
+.cta-text em { color: var(--gold-light); }
+.cta-text p { color: rgba(255,255,255,0.75); font-size: 15px; margin-bottom: 28px; max-width: 420px; line-height: 1.6; }
+.cta-illo { position: relative; width: 200px; height: 160px; flex-shrink: 0; }
+.cta-float { position: absolute; font-size: 40px; animation: floatAnim 3s ease-in-out infinite; }
+.f1 { top: 0; left: 20px; animation-delay: 0s; }
+.f2 { top: 40px; right: 0; animation-delay: 0.8s; }
+.f3 { bottom: 10px; left: 0; animation-delay: 1.6s; }
+.f4 { bottom: 20px; right: 30px; animation-delay: 2.4s; }
+@keyframes floatAnim { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+
+/* Service card */
+.service-card { border-radius: var(--radius); padding: 24px; background: #fff; border: 1px solid var(--border); cursor: pointer; transition: transform 0.22s, box-shadow 0.22s; }
+.service-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.service-card-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.service-card-icon { font-size: 36px; width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.service-card-title { font-weight: 700; font-size: 15px; color: var(--blue-dark); margin-bottom: 4px; }
+.service-card-seller { font-size: 12px; color: var(--muted); }
+.service-card-desc { font-size: 13px; color: var(--text); line-height: 1.5; margin-bottom: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.service-card-footer { display: flex; align-items: center; justify-content: space-between; }
+.service-price { font-size: 18px; font-weight: 700; color: var(--blue-dark); }
+
+@media(max-width:900px){
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-stats { flex-direction: row; flex-wrap: wrap; }
+  .categories-grid { grid-template-columns: repeat(3,1fr); }
+}
+</style>
+
+<script>
+initPage('home');
+
+function goSearch(q) {
+  const query = q || document.getElementById('hero-search').value;
+  window.location.href = '02_listing.html' + (query ? '?q=' + encodeURIComponent(query) : '');
+}
+
+document.getElementById('hero-search').addEventListener('keydown', e => {
+  if (e.key === 'Enter') goSearch();
+});
+
+// Render categories
+const catGrid = document.getElementById('categories-grid');
+catGrid.innerHTML = CATEGORIES.map(c => `
+  <div class="cat-card" style="background:${c.color}" onclick="window.location.href='02_listing.html?cat=${c.id}'">
+    <span class="cat-icon">${c.emoji}</span>
+    <div class="cat-name">${c.name}</div>
+    <div class="cat-count">${c.count} publicaciones</div>
+  </div>
+`).join('');
+
+// Render products
+const products = State.products;
+const prodGrid = document.getElementById('products-grid');
+prodGrid.innerHTML = products.slice(0, 4).map(p => renderProductCard(p)).join('');
+
+// Render services
+const services = products.filter(p => p.category === 'servicios' || p.category === 'tutorias').slice(0, 3);
+document.getElementById('services-grid').innerHTML = services.map(p => `
+  <div class="service-card" onclick="window.location.href='03_product.html?id=${p.id}'">
+    <div class="service-card-top">
+      <div class="service-card-icon" style="background:${p.bg}">${p.emoji}</div>
+      <div>
+        <div class="service-card-title">${p.title}</div>
+        <div class="service-card-seller">${p.sellerName} · ${p.sellerCareer}</div>
+      </div>
+    </div>
+    <div class="service-card-desc">${p.description}</div>
+    <div class="service-card-footer">
+      <div class="service-price">${formatPrice(p.price)}</div>
+      <div style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted)">
+        ${renderStars(p.rating)} <span>(${p.reviews})</span>
+      </div>
+    </div>
+  </div>
+`).join('');
+
+function renderProductCard(p) {
+  const badgeMap = { 'Nuevo': 'badge-nuevo', 'Popular': 'badge-popular', 'Oferta': 'badge-oferta' };
+  return `
+  <div class="card product-card" onclick="window.location.href='03_product.html?id=${p.id}'">
+    <div class="product-card-img" style="background:${p.bg}">
+      ${p.badge ? `<span class="badge ${badgeMap[p.badge]||'badge-popular'}" style="position:absolute;top:12px;left:12px;">${p.badge}</span>` : ''}
+      <span style="font-size:64px">${p.emoji}</span>
+      ${p.stock === 0 ? `<span class="badge badge-agotado" style="position:absolute;top:12px;right:12px;">Agotado</span>` : ''}
+    </div>
+    <div class="product-card-body">
+      <div class="product-card-meta">
+        <span class="badge ${p.estado==='nuevo'?'badge-nuevo':'badge-usado'}">${p.estado==='nuevo'?'Nuevo':'Usado'}</span>
+        <span class="badge badge-popular" style="background:#f4f6fb;color:var(--muted)">${CATEGORIES.find(c=>c.id===p.category)?.name||p.category}</span>
+      </div>
+      <div class="product-card-title">${p.title}</div>
+      <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px;">
+        <span class="product-card-price">${formatPrice(p.price)}</span>
+        ${p.priceOld ? `<span class="product-card-price-old">${formatPrice(p.priceOld)}</span>` : ''}
+      </div>
+      <div class="product-card-footer">
+        <div class="product-card-rating">
+          ${renderStars(p.rating)} <span style="margin-left:4px;">${p.rating} (${p.reviews})</span>
+        </div>
+        <button class="add-cart-btn" onclick="event.stopPropagation();addToCart(${p.id})" ${p.stock===0?'disabled':''}>
+          ${p.stock===0?'Agotado':'+ Carrito'}
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function addToCart(productId) {
+  const p = State.products.find(x => x.id === productId);
+  if (!p) return;
+  if (!State.user) { showToast('Inicia sesión para agregar al carrito', 'warning'); return; }
+  State.addToCart(p, 1);
+  showToast(`"${p.title}" agregado al carrito 🛒`, 'success');
+}
+
+// Animate stats
+function animateCounters() {
+  document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const suffix = el.dataset.target.endsWith('%') ? '%' : '';
+    let current = 0;
+    const step = Math.ceil(target / 60);
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = current.toLocaleString('es-CO') + suffix;
+      if (current >= target) clearInterval(timer);
+    }, 25);
+  });
+}
+
+// Footer
+document.getElementById('footer').innerHTML = renderFooter();
+
+// Start animation after a short delay
+setTimeout(animateCounters, 400);
+</script>
+</body>
+</html>

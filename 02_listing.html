@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explorar — Sabana Market</title>
+  <script src="shared.js"></script>
+</head>
+<body>
+<nav id="nav"></nav>
+
+<div class="listing-layout container" style="padding-top:40px;padding-bottom:80px;">
+
+  <!-- SIDEBAR FILTERS -->
+  <aside class="filters-sidebar" id="filters-sidebar">
+    <div class="filters-header">
+      <h3>Filtros</h3>
+      <button class="btn btn-sm" onclick="clearFilters()" style="background:none;color:var(--muted);font-size:13px;padding:4px 8px;">Limpiar todo</button>
+    </div>
+
+    <div class="filter-group">
+      <div class="filter-title">Categoría</div>
+      <label class="filter-check" onclick="toggleFilter('cat','todos')">
+        <input type="radio" name="cat" value="todos" id="cat-todos" checked> Todas las categorías
+      </label>
+      <label class="filter-check" onclick="toggleFilter('cat','libros')">
+        <input type="radio" name="cat" value="libros" id="cat-libros"> 📚 Libros
+      </label>
+      <label class="filter-check" onclick="toggleFilter('cat','tutorias')">
+        <input type="radio" name="cat" value="tutorias" id="cat-tutorias"> 🎓 Tutorías
+      </label>
+      <label class="filter-check" onclick="toggleFilter('cat','laboratorio')">
+        <input type="radio" name="cat" value="laboratorio" id="cat-laboratorio"> 🧪 Laboratorio
+      </label>
+      <label class="filter-check" onclick="toggleFilter('cat','diseno')">
+        <input type="radio" name="cat" value="diseno" id="cat-diseno"> ✏️ Diseño
+      </label>
+      <label class="filter-check" onclick="toggleFilter('cat','servicios')">
+        <input type="radio" name="cat" value="servicios" id="cat-servicios"> 🔧 Servicios
+      </label>
+    </div>
+
+    <div class="filter-group">
+      <div class="filter-title">Estado</div>
+      <label class="filter-check">
+        <input type="checkbox" id="estado-nuevo" onchange="applyFilters()"> Nuevo
+      </label>
+      <label class="filter-check">
+        <input type="checkbox" id="estado-usado" onchange="applyFilters()"> Usado
+      </label>
+    </div>
+
+    <div class="filter-group">
+      <div class="filter-title">Precio</div>
+      <div class="price-range-labels">
+        <span id="price-min-label">$0</span>
+        <span id="price-max-label">$500.000</span>
+      </div>
+      <input type="range" id="price-max" min="0" max="500000" step="10000" value="500000" class="price-slider" oninput="updatePriceLabel();applyFilters()">
+      <div style="font-size:12px;color:var(--muted);margin-top:4px;">Máximo: <strong id="price-display">$500.000</strong></div>
+    </div>
+
+    <div class="filter-group">
+      <div class="filter-title">Disponibilidad</div>
+      <label class="filter-check">
+        <input type="checkbox" id="only-stock" onchange="applyFilters()"> Solo con stock
+      </label>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="listing-main">
+    <div class="listing-topbar">
+      <div class="listing-search-wrap">
+        <input type="text" id="listing-search" placeholder="Buscar productos..." class="listing-search-input" oninput="debounceSearch()">
+        <span class="listing-search-icon">🔍</span>
+      </div>
+      <div class="listing-controls">
+        <span id="results-count" class="results-count">Cargando...</span>
+        <select class="form-input" id="sort-select" style="width:auto;padding:8px 12px;font-size:13px;" onchange="applyFilters()">
+          <option value="relevancia">Relevancia</option>
+          <option value="precio-asc">Precio: menor a mayor</option>
+          <option value="precio-desc">Precio: mayor a menor</option>
+          <option value="reciente">Más reciente</option>
+          <option value="rating">Mejor valorado</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Active filter tags -->
+    <div id="active-tags" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;"></div>
+
+    <!-- Grid -->
+    <div id="products-grid" class="grid-3"></div>
+
+    <!-- Pagination -->
+    <div id="pagination" class="pagination" style="margin-top:40px;"></div>
+  </main>
+</div>
+
+<footer id="footer"></footer>
+
+<style>
+.listing-layout { display: grid; grid-template-columns: 260px 1fr; gap: 32px; align-items: start; }
+.filters-sidebar { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; position: sticky; top: calc(var(--nav-h) + 20px); }
+.filters-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.filters-header h3 { font-size: 16px; font-weight: 700; color: var(--blue-dark); }
+.filter-group { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+.filter-group:last-child { border-bottom: none; margin-bottom: 0; }
+.filter-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 12px; }
+.filter-check { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text); padding: 5px 0; cursor: pointer; transition: color 0.15s; }
+.filter-check:hover { color: var(--blue-mid); }
+.filter-check input { accent-color: var(--blue-dark); cursor: pointer; }
+.price-range-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.price-slider { width: 100%; accent-color: var(--blue-dark); }
+
+.listing-main { min-width: 0; }
+.listing-topbar { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+.listing-search-wrap { position: relative; flex: 1; min-width: 200px; }
+.listing-search-input { width: 100%; padding: 11px 42px 11px 16px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: var(--font-sans); font-size: 14px; outline: none; background: #fff; transition: border-color 0.2s; }
+.listing-search-input:focus { border-color: var(--blue-mid); }
+.listing-search-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.listing-controls { display: flex; align-items: center; gap: 12px; }
+.results-count { font-size: 13px; color: var(--muted); white-space: nowrap; }
+
+.active-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--blue-dark); color: #fff; font-size: 12px; padding: 4px 10px; border-radius: 20px; }
+.active-tag button { background: none; border: none; color: rgba(255,255,255,0.8); cursor: pointer; font-size: 14px; line-height: 1; padding: 0; }
+
+/* Product card */
+.add-cart-btn { background: var(--blue-dark); color: #fff; border: none; border-radius: 8px; padding: 8px 14px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: var(--font-sans); }
+.add-cart-btn:hover { background: var(--blue-mid); }
+
+.pagination { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.page-btn { width: 38px; height: 38px; border-radius: 8px; border: 1.5px solid var(--border); background: #fff; font-family: var(--font-sans); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.page-btn.active { background: var(--blue-dark); color: #fff; border-color: var(--blue-dark); }
+.page-btn:hover:not(.active) { border-color: var(--blue-mid); color: var(--blue-mid); }
+
+@media(max-width:900px){
+  .listing-layout { grid-template-columns: 1fr; }
+  .filters-sidebar { position: static; }
+}
+</style>
+
+<script>
+initPage('listing');
+document.getElementById('footer').innerHTML = renderFooter();
+
+let currentPage = 1;
+const PER_PAGE = 9;
+let searchTimer = null;
+
+// Read URL params
+const urlParams = new URLSearchParams(window.location.search);
+const initQuery = urlParams.get('q') || '';
+const initCat = urlParams.get('cat') || 'todos';
+
+if (initQuery) document.getElementById('listing-search').value = initQuery;
+if (initCat !== 'todos') {
+  const radio = document.getElementById('cat-' + initCat);
+  if (radio) radio.checked = true;
+}
+
+function getFilters() {
+  const cat = document.querySelector('input[name="cat"]:checked')?.value || 'todos';
+  const q = document.getElementById('listing-search').value.trim().toLowerCase();
+  const nuevoChecked = document.getElementById('estado-nuevo').checked;
+  const usadoChecked = document.getElementById('estado-usado').checked;
+  const maxPrice = parseInt(document.getElementById('price-max').value);
+  const onlyStock = document.getElementById('only-stock').checked;
+  const sort = document.getElementById('sort-select').value;
+  return { cat, q, nuevoChecked, usadoChecked, maxPrice, onlyStock, sort };
+}
+
+function applyFilters() {
+  const { cat, q, nuevoChecked, usadoChecked, maxPrice, onlyStock, sort } = getFilters();
+  let products = State.products;
+
+  if (cat !== 'todos') products = products.filter(p => p.category === cat);
+  if (q) products = products.filter(p => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q) || p.tags?.some(t => t.includes(q)));
+  if (nuevoChecked || usadoChecked) {
+    products = products.filter(p => (nuevoChecked && p.estado === 'nuevo') || (usadoChecked && p.estado === 'usado'));
+  }
+  products = products.filter(p => p.price <= maxPrice);
+  if (onlyStock) products = products.filter(p => p.stock > 0);
+
+  switch(sort) {
+    case 'precio-asc': products.sort((a,b) => a.price - b.price); break;
+    case 'precio-desc': products.sort((a,b) => b.price - a.price); break;
+    case 'reciente': products.sort((a,b) => b.id - a.id); break;
+    case 'rating': products.sort((a,b) => b.rating - a.rating); break;
+  }
+
+  currentPage = 1;
+  renderGrid(products);
+  renderActiveTags({ cat, q, nuevoChecked, usadoChecked, maxPrice });
+}
+
+function renderGrid(products) {
+  const grid = document.getElementById('products-grid');
+  const total = products.length;
+  document.getElementById('results-count').textContent = `${total} resultado${total !== 1 ? 's' : ''}`;
+
+  if (total === 0) {
+    const q = document.getElementById('listing-search').value;
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1">
+        <div class="empty-state-icon">🔎</div>
+        <h3>${q ? `No encontramos resultados para "${q}"` : 'Sin productos con estos filtros'}</h3>
+        <p>Intenta con otras palabras clave o ajusta los filtros</p>
+        <button class="btn btn-primary" onclick="clearFilters()">Limpiar filtros</button>
+      </div>`;
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
+
+  const start = (currentPage - 1) * PER_PAGE;
+  const page = products.slice(start, start + PER_PAGE);
+  grid.innerHTML = page.map(p => renderCard(p)).join('');
+
+  // Pagination
+  const totalPages = Math.ceil(total / PER_PAGE);
+  let pag = '';
+  for (let i = 1; i <= totalPages; i++) {
+    pag += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goPage(${i}, ${JSON.stringify(products).replace(/"/g, '&quot;')})">${i}</button>`;
+  }
+  // Store current filtered products for pagination
+  window._filteredProducts = products;
+  document.getElementById('pagination').innerHTML = totalPages > 1 ? pag : '';
+}
+
+function goPage(n, products) {
+  currentPage = n;
+  renderGrid(window._filteredProducts || State.products);
+}
+
+function renderCard(p) {
+  const badgeMap = { 'Nuevo': 'badge-nuevo', 'Popular': 'badge-popular', 'Oferta': 'badge-oferta' };
+  return `
+  <div class="card product-card" onclick="window.location.href='03_product.html?id=${p.id}'">
+    <div class="product-card-img" style="background:${p.bg};position:relative;">
+      ${p.badge ? `<span class="badge ${badgeMap[p.badge]||''}" style="position:absolute;top:12px;left:12px;">${p.badge}</span>` : ''}
+      <span style="font-size:60px">${p.emoji}</span>
+      ${p.stock === 0 ? `<span class="badge badge-agotado" style="position:absolute;top:12px;right:12px;">Agotado</span>` : ''}
+    </div>
+    <div class="product-card-body">
+      <div class="product-card-meta">
+        <span class="badge ${p.estado==='nuevo'?'badge-nuevo':'badge-usado'}">${p.estado==='nuevo'?'Nuevo':'Usado'}</span>
+      </div>
+      <div class="product-card-title">${p.title}</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">${p.sellerName}</div>
+      <div style="display:flex;align-items:baseline;gap:8px;">
+        <span class="product-card-price">${formatPrice(p.price)}</span>
+        ${p.priceOld ? `<span class="product-card-price-old">${formatPrice(p.priceOld)}</span>` : ''}
+      </div>
+      <div class="product-card-footer">
+        <div class="product-card-rating">${renderStars(p.rating)} <span style="margin-left:4px">${p.rating}</span></div>
+        <button class="add-cart-btn" onclick="event.stopPropagation();addToCart(${p.id})" ${p.stock===0?'disabled':''}>
+          ${p.stock===0?'Agotado':'+ Carrito'}
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderActiveTags({ cat, q, nuevoChecked, usadoChecked, maxPrice }) {
+  const tags = [];
+  if (cat !== 'todos') tags.push({ label: CATEGORIES.find(c=>c.id===cat)?.name || cat, clear: () => { document.getElementById('cat-todos').checked=true; applyFilters(); } });
+  if (q) tags.push({ label: `"${q}"`, clear: () => { document.getElementById('listing-search').value=''; applyFilters(); } });
+  if (nuevoChecked) tags.push({ label: 'Nuevo', clear: () => { document.getElementById('estado-nuevo').checked=false; applyFilters(); } });
+  if (usadoChecked) tags.push({ label: 'Usado', clear: () => { document.getElementById('estado-usado').checked=false; applyFilters(); } });
+  if (maxPrice < 500000) tags.push({ label: `Hasta ${formatPrice(maxPrice)}`, clear: () => { document.getElementById('price-max').value=500000; updatePriceLabel(); applyFilters(); } });
+
+  const container = document.getElementById('active-tags');
+  if (tags.length === 0) { container.innerHTML = ''; return; }
+  container.innerHTML = tags.map((t, i) => `
+    <span class="active-tag">${t.label} <button onclick="clearTag(${i})">×</button></span>
+  `).join('');
+  window._activeTags = tags;
+}
+
+function clearTag(i) { window._activeTags[i].clear(); }
+
+function toggleFilter(type, value) {
+  setTimeout(applyFilters, 10);
+}
+
+function clearFilters() {
+  document.getElementById('cat-todos').checked = true;
+  document.getElementById('estado-nuevo').checked = false;
+  document.getElementById('estado-usado').checked = false;
+  document.getElementById('price-max').value = 500000;
+  document.getElementById('only-stock').checked = false;
+  document.getElementById('listing-search').value = '';
+  document.getElementById('sort-select').value = 'relevancia';
+  updatePriceLabel();
+  applyFilters();
+}
+
+function updatePriceLabel() {
+  const v = parseInt(document.getElementById('price-max').value);
+  document.getElementById('price-display').textContent = formatPrice(v);
+}
+
+function debounceSearch() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(applyFilters, 280);
+}
+
+function addToCart(productId) {
+  const p = State.products.find(x => x.id === productId);
+  if (!p) return;
+  if (!State.user) { showToast('Inicia sesión para agregar al carrito', 'warning'); return; }
+  State.addToCart(p, 1);
+  showToast(`"${p.title}" agregado al carrito 🛒`, 'success');
+  State.updateCartBadge();
+}
+
+// Init
+applyFilters();
+</script>
+</body>
+</html>
