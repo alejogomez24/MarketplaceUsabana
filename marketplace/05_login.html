@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar sesión — Sabana Market</title>
+  <script src="shared.js"></script>
+</head>
+<body>
+<nav id="nav"></nav>
+
+<div class="auth-page">
+  <div class="auth-left">
+    <div class="auth-brand">
+      <div style="font-size:48px;margin-bottom:16px;">🎓</div>
+      <h2>Sabana Market</h2>
+      <p>La comunidad de compra y venta exclusiva para estudiantes de la Universidad de La Sabana</p>
+    </div>
+    <div class="auth-features">
+      <div class="auth-feature"><span>📚</span><div><strong>Libros y materiales</strong><p>Encuentra todo lo que necesitas para tu semestre</p></div></div>
+      <div class="auth-feature"><span>🎓</span><div><strong>Tutorías especializadas</strong><p>Aprende de otros estudiantes en tu carrera</p></div></div>
+      <div class="auth-feature"><span>🔒</span><div><strong>100% seguro</strong><p>Solo estudiantes verificados con correo institucional</p></div></div>
+    </div>
+  </div>
+
+  <div class="auth-right">
+    <div class="auth-card">
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab" id="tab-login" onclick="switchTab('login')">Iniciar sesión</button>
+        <button class="auth-tab" id="tab-register" onclick="switchTab('register')">Registrarse</button>
+        <div class="auth-tab-indicator" id="tab-indicator"></div>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="login-form" onsubmit="doLogin(event)" novalidate>
+        <div class="auth-form-header">
+          <h3>Bienvenido de nuevo</h3>
+          <p>Ingresa con tu correo institucional</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Correo institucional</label>
+          <input type="email" id="login-email" class="form-input" placeholder="tu.nombre@unisabana.edu.co">
+          <div class="form-error" id="login-email-error"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Contraseña</label>
+          <div style="position:relative;">
+            <input type="password" id="login-password" class="form-input" placeholder="Tu contraseña" style="padding-right:44px;">
+            <button type="button" class="pw-toggle" onclick="togglePw('login-password',this)">👁️</button>
+          </div>
+          <div class="form-error" id="login-password-error"></div>
+        </div>
+        <div class="form-error show" id="login-global-error" style="text-align:center;padding:10px;background:#fff0f0;border-radius:8px;margin-bottom:12px;display:none!important;"></div>
+        <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;" id="login-btn">
+          Iniciar sesión →
+        </button>
+        <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--muted);">
+          ¿No tienes cuenta? <a href="#" onclick="switchTab('register');return false;" style="color:var(--blue-mid);font-weight:600;">Regístrate aquí</a>
+        </div>
+        <div class="demo-hint">
+          <strong>Demo:</strong> usa <code>demo@unisabana.edu.co</code> / <code>demo123</code>
+        </div>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <form id="register-form" onsubmit="doRegister(event)" novalidate style="display:none;">
+        <div class="auth-form-header">
+          <h3>Crear cuenta</h3>
+          <p>Únete a la comunidad Sabana Market</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nombre completo</label>
+          <input type="text" id="reg-name" class="form-input" placeholder="Tu nombre completo">
+          <div class="form-error" id="reg-name-error"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Correo institucional</label>
+          <input type="email" id="reg-email" class="form-input" placeholder="tu.nombre@unisabana.edu.co">
+          <div class="form-error" id="reg-email-error"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Carrera</label>
+          <select id="reg-career" class="form-input">
+            <option value="">Selecciona tu carrera</option>
+            <option>Administración de Empresas</option>
+            <option>Comunicación Social</option>
+            <option>Derecho</option>
+            <option>Diseño Gráfico</option>
+            <option>Enfermería</option>
+            <option>Ingeniería de Sistemas</option>
+            <option>Ingeniería Industrial</option>
+            <option>Lenguas Modernas</option>
+            <option>Medicina</option>
+            <option>Psicología</option>
+            <option>Química Farmacéutica</option>
+          </select>
+          <div class="form-error" id="reg-career-error"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Contraseña</label>
+          <div style="position:relative;">
+            <input type="password" id="reg-password" class="form-input" placeholder="Mínimo 6 caracteres" style="padding-right:44px;">
+            <button type="button" class="pw-toggle" onclick="togglePw('reg-password',this)">👁️</button>
+          </div>
+          <div class="form-error" id="reg-password-error"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirmar contraseña</label>
+          <div style="position:relative;">
+            <input type="password" id="reg-confirm" class="form-input" placeholder="Repite tu contraseña" style="padding-right:44px;">
+            <button type="button" class="pw-toggle" onclick="togglePw('reg-confirm',this)">👁️</button>
+          </div>
+          <div class="form-error" id="reg-confirm-error"></div>
+        </div>
+        <div class="form-group" style="margin-bottom:12px;">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;color:var(--text);">
+            <input type="checkbox" id="reg-terms" style="margin-top:2px;accent-color:var(--blue-dark);">
+            Acepto el <a href="#" style="color:var(--blue-mid);">reglamento de Sabana Market</a> y las políticas institucionales
+          </label>
+          <div class="form-error" id="reg-terms-error"></div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;">
+          Crear cuenta →
+        </button>
+        <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--muted);">
+          ¿Ya tienes cuenta? <a href="#" onclick="switchTab('login');return false;" style="color:var(--blue-mid);font-weight:600;">Inicia sesión</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+body { background: var(--bg); }
+.auth-page { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - var(--nav-h)); }
+.auth-left { background: linear-gradient(160deg, #1A3A6B 0%, #2C5FA8 100%); padding: 64px 56px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+.auth-left::before { content: ''; position: absolute; top: -40%; right: -20%; width: 500px; height: 500px; border-radius: 50%; background: rgba(201,168,76,0.08); }
+.auth-brand { position: relative; z-index: 1; margin-bottom: 48px; }
+.auth-brand h2 { font-family: var(--font-serif); font-style: italic; font-size: 36px; color: #fff; margin-bottom: 12px; }
+.auth-brand p { font-size: 15px; color: rgba(255,255,255,0.72); line-height: 1.65; max-width: 380px; }
+.auth-features { display: flex; flex-direction: column; gap: 24px; position: relative; z-index: 1; }
+.auth-feature { display: flex; gap: 16px; align-items: flex-start; }
+.auth-feature span { font-size: 28px; flex-shrink: 0; margin-top: 2px; }
+.auth-feature strong { display: block; color: #fff; font-size: 15px; margin-bottom: 3px; }
+.auth-feature p { color: rgba(255,255,255,0.65); font-size: 13px; line-height: 1.5; margin: 0; }
+
+.auth-right { display: flex; align-items: center; justify-content: center; padding: 40px; }
+.auth-card { width: 100%; max-width: 440px; background: #fff; border-radius: 20px; box-shadow: var(--shadow-lg); padding: 40px; }
+.auth-tabs { display: flex; position: relative; background: var(--bg); border-radius: 10px; padding: 4px; margin-bottom: 32px; }
+.auth-tab { flex: 1; padding: 10px; border: none; background: none; font-family: var(--font-sans); font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; border-radius: 8px; transition: color 0.2s; position: relative; z-index: 1; }
+.auth-tab.active { color: var(--blue-dark); }
+.auth-tab-indicator { position: absolute; top: 4px; left: 4px; width: calc(50% - 4px); height: calc(100% - 8px); background: #fff; border-radius: 8px; box-shadow: 0 1px 6px rgba(0,0,0,0.08); transition: transform 0.25s cubic-bezier(.4,0,.2,1); }
+.auth-form-header { margin-bottom: 24px; }
+.auth-form-header h3 { font-family: var(--font-serif); font-style: italic; font-size: 24px; color: var(--blue-dark); margin-bottom: 4px; }
+.auth-form-header p { font-size: 14px; color: var(--muted); }
+.pw-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 16px; padding: 0; opacity: 0.6; }
+.pw-toggle:hover { opacity: 1; }
+.demo-hint { margin-top: 20px; font-size: 12px; color: var(--muted); background: var(--bg); border-radius: 8px; padding: 12px 14px; line-height: 1.6; }
+.demo-hint code { background: rgba(44,95,168,0.1); color: var(--blue-dark); padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+
+@media(max-width:768px) {
+  .auth-page { grid-template-columns: 1fr; }
+  .auth-left { display: none; }
+  .auth-right { padding: 24px 16px; }
+}
+</style>
+
+<script>
+initPage('login');
+
+// Read URL params
+const urlParams = new URLSearchParams(window.location.search);
+const initTab = urlParams.get('tab') || 'login';
+const redirect = urlParams.get('redirect') || '01_home.html';
+
+// If already logged in, redirect
+if (State.user) window.location.href = redirect;
+
+function switchTab(tab) {
+  const loginForm = document.getElementById('login-form');
+  const regForm = document.getElementById('register-form');
+  const indicator = document.getElementById('tab-indicator');
+  document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+  document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+  indicator.style.transform = tab === 'register' ? 'translateX(100%)' : 'translateX(0)';
+  loginForm.style.display = tab === 'login' ? 'block' : 'none';
+  regForm.style.display = tab === 'register' ? 'block' : 'none';
+}
+
+function togglePw(id, btn) {
+  const input = document.getElementById(id);
+  if (input.type === 'password') { input.type = 'text'; btn.textContent = '🙈'; }
+  else { input.type = 'password'; btn.textContent = '👁️'; }
+}
+
+function setError(fieldId, msg) {
+  const el = document.getElementById(fieldId);
+  if (!el) return;
+  el.textContent = msg;
+  el.style.display = msg ? 'block' : 'none';
+  const input = document.getElementById(fieldId.replace('-error', ''));
+  if (input) input.classList.toggle('error', !!msg);
+}
+
+function clearErrors(...ids) {
+  ids.forEach(id => setError(id, ''));
+}
+
+// LOGIN
+function doLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  let valid = true;
+
+  clearErrors('login-email-error', 'login-password-error');
+  document.getElementById('login-global-error').style.display = 'none';
+
+  if (!email) { setError('login-email-error', 'El correo es obligatorio'); valid = false; }
+  else if (!email.endsWith('@unisabana.edu.co')) { setError('login-email-error', 'Solo se permiten correos @unisabana.edu.co'); valid = false; }
+  if (!password) { setError('login-password-error', 'La contraseña es obligatoria'); valid = false; }
+
+  if (!valid) return;
+
+  const btn = document.getElementById('login-btn');
+  btn.textContent = 'Verificando...';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    // Demo credentials
+    if (email === 'demo@unisabana.edu.co' && password === 'demo123') {
+      State.user = MOCK_USERS[99];
+      State.addNotification('¡Bienvenido de nuevo, Demo Estudiante! 👋', 'info');
+      showToast('¡Bienvenido de nuevo! 🎉', 'success');
+      setTimeout(() => window.location.href = redirect, 700);
+    } else if (email.endsWith('@unisabana.edu.co')) {
+      // Simulate wrong credentials
+      const globalErr = document.getElementById('login-global-error');
+      globalErr.textContent = 'Correo o contraseña incorrectos. Intenta con demo@unisabana.edu.co / demo123';
+      globalErr.style.display = 'block';
+      btn.textContent = 'Iniciar sesión →';
+      btn.disabled = false;
+    }
+  }, 700);
+}
+
+// REGISTER
+function doRegister(e) {
+  e.preventDefault();
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const career = document.getElementById('reg-career').value;
+  const password = document.getElementById('reg-password').value;
+  const confirm = document.getElementById('reg-confirm').value;
+  const terms = document.getElementById('reg-terms').checked;
+  let valid = true;
+
+  clearErrors('reg-name-error','reg-email-error','reg-career-error','reg-password-error','reg-confirm-error','reg-terms-error');
+
+  if (!name || name.length < 3) { setError('reg-name-error', 'Ingresa tu nombre completo (mínimo 3 caracteres)'); valid = false; }
+  if (!email) { setError('reg-email-error', 'El correo es obligatorio'); valid = false; }
+  else if (!email.endsWith('@unisabana.edu.co')) { setError('reg-email-error', 'Solo se permiten correos @unisabana.edu.co'); valid = false; }
+  else if (email === 'demo@unisabana.edu.co') { setError('reg-email-error', 'Este correo ya está registrado'); valid = false; }
+  if (!career) { setError('reg-career-error', 'Selecciona tu carrera'); valid = false; }
+  if (!password || password.length < 6) { setError('reg-password-error', 'La contraseña debe tener al menos 6 caracteres'); valid = false; }
+  if (!confirm) { setError('reg-confirm-error', 'Confirma tu contraseña'); valid = false; }
+  else if (password !== confirm) { setError('reg-confirm-error', 'Las contraseñas no coinciden'); valid = false; }
+  if (!terms) { setError('reg-terms-error', 'Debes aceptar el reglamento para continuar'); valid = false; }
+
+  if (!valid) return;
+
+  // Simulate success
+  const avatars = ['🧑‍💻','👩‍🎓','👨‍🎓','🧑‍🔬','👩‍💼','👨‍💼'];
+  const newUser = {
+    id: Date.now(), name, email, career,
+    avatar: avatars[Math.floor(Math.random() * avatars.length)],
+    role: 'buyer', rating: 0, joinDate: new Date().toISOString().split('T')[0], sales: 0
+  };
+  State.user = newUser;
+  State.addNotification(`¡Bienvenido a Sabana Market, ${name}! 🎉`, 'info');
+  showToast('¡Cuenta creada exitosamente! 🎓', 'success');
+  setTimeout(() => window.location.href = redirect, 700);
+}
+
+// Init tab
+switchTab(initTab);
+</script>
+</body>
+</html>

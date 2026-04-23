@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Error — Sabana Market</title>
+  <script src="shared.js"></script>
+</head>
+<body>
+<nav id="nav"></nav>
+
+<div class="error-page-wrap">
+  <!-- Selector -->
+  <div class="error-selector-bar">
+    <span style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Ver error:</span>
+    <button class="err-tab active" onclick="showError('404')" id="tab-404">404</button>
+    <button class="err-tab" onclick="showError('500')" id="tab-500">500</button>
+    <button class="err-tab" onclick="showError('403')" id="tab-403">403</button>
+    <button class="err-tab" onclick="showError('offline')" id="tab-offline">Sin conexión</button>
+  </div>
+
+  <!-- ERROR SCREENS -->
+  <div id="err-404" class="error-screen active">
+    <div class="error-illustration">
+      <div class="err-shelf">
+        <div class="err-book b1">📘</div>
+        <div class="err-book b2">📗</div>
+        <div class="err-book b3">📙</div>
+        <div class="err-book b4 missing">?</div>
+        <div class="err-book b5">📕</div>
+      </div>
+      <div class="err-code">404</div>
+    </div>
+    <h1 class="err-title">Esta página se perdió en la biblioteca</h1>
+    <p class="err-desc">El recurso que buscas no existe o fue movido a otra ubicación. Puede que el enlace esté desactualizado o que el producto ya no esté disponible.</p>
+    <div class="err-actions">
+      <button class="btn btn-primary btn-lg" onclick="window.location.href='01_home.html'">🏠 Volver al inicio</button>
+      <button class="btn btn-secondary btn-lg" onclick="window.history.back()">← Página anterior</button>
+      <button class="btn btn-secondary btn-lg" onclick="window.location.href='02_listing.html'">🔍 Explorar productos</button>
+    </div>
+    <div class="err-search">
+      <p style="color:var(--muted);font-size:14px;margin-bottom:12px;">¿Buscabas algo en particular?</p>
+      <div style="display:flex;gap:0;max-width:400px;margin:0 auto;">
+        <input type="text" id="err-search-input" placeholder="Buscar en Sabana Market..." style="flex:1;padding:12px 16px;border:1.5px solid var(--border);border-radius:8px 0 0 8px;font-family:var(--font-sans);font-size:14px;outline:none;">
+        <button class="btn btn-primary" style="border-radius:0 8px 8px 0;padding:12px 20px;" onclick="window.location.href='02_listing.html?q='+encodeURIComponent(document.getElementById('err-search-input').value)">Buscar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="err-500" class="error-screen">
+    <div class="error-illustration">
+      <div class="err-server">
+        <div class="server-body">
+          <div class="server-light red"></div>
+          <div class="server-light yellow"></div>
+          <div class="server-lines">
+            <div class="server-line"></div>
+            <div class="server-line short"></div>
+            <div class="server-line"></div>
+          </div>
+        </div>
+        <div class="server-smoke">💨</div>
+      </div>
+      <div class="err-code">500</div>
+    </div>
+    <h1 class="err-title">Algo salió mal en el servidor</h1>
+    <p class="err-desc">Nuestros servidores están experimentando dificultades técnicas. Estamos trabajando para resolver el problema lo antes posible.</p>
+    <div class="err-actions">
+      <button class="btn btn-primary btn-lg" onclick="retryPage()">🔄 Reintentar</button>
+      <button class="btn btn-secondary btn-lg" onclick="window.location.href='01_home.html'">🏠 Ir al inicio</button>
+    </div>
+    <div style="margin-top:32px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;max-width:440px;text-align:left;">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;">Estado del sistema</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div class="status-row"><span>API Principal</span><span class="status-dot red">✗ Caído</span></div>
+        <div class="status-row"><span>Base de datos</span><span class="status-dot green">✓ Operativo</span></div>
+        <div class="status-row"><span>CDN / Assets</span><span class="status-dot green">✓ Operativo</span></div>
+        <div class="status-row"><span>Autenticación</span><span class="status-dot yellow">⚠ Degradado</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="err-403" class="error-screen">
+    <div class="error-illustration">
+      <div class="err-lock">
+        <div class="lock-body">
+          <div class="lock-shackle"></div>
+          <div class="lock-face">
+            <div class="lock-keyhole"></div>
+          </div>
+        </div>
+      </div>
+      <div class="err-code">403</div>
+    </div>
+    <h1 class="err-title">No tienes permiso para ver esta página</h1>
+    <p class="err-desc">Tu cuenta no tiene los permisos necesarios para acceder a este contenido. Esta sección puede estar restringida a administradores u otros roles específicos.</p>
+    <div class="err-actions">
+      <button class="btn btn-primary btn-lg" onclick="window.location.href='05_login.html'">🔐 Iniciar sesión</button>
+      <button class="btn btn-secondary btn-lg" onclick="window.location.href='01_home.html'">🏠 Volver al inicio</button>
+    </div>
+    <div style="margin-top:28px;background:var(--bg);border-radius:10px;padding:16px 20px;max-width:400px;font-size:13px;color:var(--muted);line-height:1.6;">
+      ¿Crees que esto es un error? Contacta al administrador en <strong style="color:var(--blue-dark)">soporte@unisabana.edu.co</strong>
+    </div>
+  </div>
+
+  <div id="err-offline" class="error-screen">
+    <div class="error-illustration">
+      <div class="err-wifi">
+        <div class="wifi-arc a1"></div>
+        <div class="wifi-arc a2"></div>
+        <div class="wifi-arc a3"></div>
+        <div class="wifi-dot"></div>
+        <div class="wifi-slash"></div>
+      </div>
+      <div class="err-code" style="color:var(--muted)">Sin red</div>
+    </div>
+    <h1 class="err-title">Parece que perdiste la conexión</h1>
+    <p class="err-desc">No hay conexión a internet en este momento. Revisa tu conexión WiFi o datos móviles e intenta de nuevo.</p>
+    <div class="err-actions">
+      <button class="btn btn-primary btn-lg" onclick="retryConnection()">🔄 Reintentar conexión</button>
+      <button class="btn btn-secondary btn-lg" onclick="window.location.href='01_home.html'">🏠 Ir al inicio</button>
+    </div>
+    <div style="margin-top:32px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
+      <div class="offline-tip"><div style="font-size:28px;margin-bottom:8px">📶</div><div>Verifica tu WiFi</div></div>
+      <div class="offline-tip"><div style="font-size:28px;margin-bottom:8px">✈️</div><div>Modo avión desactivado</div></div>
+      <div class="offline-tip"><div style="font-size:28px;margin-bottom:8px">🔌</div><div>Reinicia el router</div></div>
+    </div>
+  </div>
+</div>
+
+<footer id="footer"></footer>
+
+<style>
+.error-page-wrap { min-height: calc(100vh - var(--nav-h) - 200px); display: flex; flex-direction: column; align-items: center; padding: 40px 20px 80px; }
+
+.error-selector-bar { display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 8px 14px; margin-bottom: 56px; flex-wrap: wrap; justify-content: center; }
+.err-tab { padding: 6px 18px; border-radius: 6px; border: 1.5px solid var(--border); background: #fff; font-family: var(--font-sans); font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s; color: var(--muted); }
+.err-tab.active { background: var(--blue-dark); color: #fff; border-color: var(--blue-dark); }
+.err-tab:hover:not(.active) { border-color: var(--blue-mid); color: var(--blue-mid); }
+
+.error-screen { display: none; flex-direction: column; align-items: center; text-align: center; max-width: 560px; width: 100%; animation: fadeIn 0.3s ease; }
+.error-screen.active { display: flex; }
+
+.error-illustration { position: relative; margin-bottom: 32px; }
+.err-code { font-size: 100px; font-weight: 900; color: var(--border); line-height: 1; letter-spacing: -4px; font-family: var(--font-sans); margin-top: 8px; }
+
+/* 404 shelf */
+.err-shelf { display: flex; gap: 4px; align-items: flex-end; justify-content: center; margin-bottom: 8px; }
+.err-book { font-size: 40px; width: 46px; height: 64px; border-radius: 4px 4px 0 0; display: flex; align-items: center; justify-content: center; animation: bookBounce 2s ease-in-out infinite; }
+.b1 { animation-delay: 0s; background: #EEF4FF; }
+.b2 { animation-delay: .2s; background: #F0FFF4; }
+.b3 { animation-delay: .4s; background: #FFFBEE; }
+.b4 { animation-delay: .6s; background: #FFF0F0; font-size: 24px; font-weight: 900; color: #C0392B; border: 2px dashed #C0392B; }
+.b5 { animation-delay: .8s; background: #F5F0FF; }
+.err-book.missing { animation: missingBook 2s ease-in-out infinite; }
+
+@keyframes bookBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes missingBook { 0%,100% { transform: translateY(0) rotate(0deg); } 25% { transform: translateY(-10px) rotate(-5deg); } 75% { transform: translateY(-8px) rotate(3deg); } }
+
+/* 500 server */
+.err-server { position: relative; display: inline-block; }
+.server-body { width: 120px; height: 80px; background: #344054; border-radius: 8px; margin: 0 auto 8px; display: flex; flex-direction: column; align-items: flex-start; padding: 12px; gap: 6px; box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+.server-light { width: 12px; height: 12px; border-radius: 50%; }
+.server-light.red { background: #E74C3C; box-shadow: 0 0 8px #E74C3C; animation: blink 0.8s infinite; }
+.server-light.yellow { background: #F39C12; box-shadow: 0 0 8px #F39C12; animation: blink 1.2s infinite 0.4s; }
+.server-lines { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+.server-line { height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; }
+.server-line.short { width: 60%; }
+.server-smoke { position: absolute; top: -20px; right: -10px; font-size: 28px; animation: smoke 1.5s ease-in-out infinite; }
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.2; } }
+@keyframes smoke { 0%,100% { transform: translateY(0) rotate(-10deg); opacity: 0.7; } 50% { transform: translateY(-10px) rotate(10deg); opacity: 1; } }
+
+/* Status rows */
+.status-row { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; border-bottom: 1px solid var(--border); }
+.status-row:last-child { border-bottom: none; }
+.status-dot { font-size: 12px; font-weight: 600; }
+.status-dot.green { color: #1A7A3A; }
+.status-dot.red { color: #C0392B; }
+.status-dot.yellow { color: #B07A20; }
+
+/* 403 lock */
+.err-lock { display: flex; justify-content: center; margin-bottom: 8px; }
+.lock-body { position: relative; width: 80px; }
+.lock-shackle { width: 40px; height: 40px; border: 8px solid var(--blue-dark); border-radius: 20px 20px 0 0; border-bottom: none; margin: 0 auto; animation: shake 3s ease-in-out infinite; }
+.lock-face { width: 80px; height: 64px; background: var(--blue-dark); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+.lock-keyhole { width: 16px; height: 24px; background: #fff; border-radius: 50% 50% 4px 4px; position: relative; }
+.lock-keyhole::before { content: ''; position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%); width: 8px; height: 14px; background: #fff; border-radius: 0 0 4px 4px; }
+@keyframes shake { 0%,90%,100% { transform: rotate(0deg); } 92% { transform: rotate(-3deg); } 94% { transform: rotate(3deg); } 96% { transform: rotate(-2deg); } 98% { transform: rotate(0deg); } }
+
+/* Offline wifi */
+.err-wifi { position: relative; width: 100px; height: 80px; margin: 0 auto 8px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; }
+.wifi-arc { border: 6px solid var(--border); border-bottom: none; border-radius: 50% 50% 0 0; opacity: 0.4; }
+.a1 { width: 80px; height: 40px; }
+.a2 { width: 54px; height: 27px; }
+.a3 { width: 28px; height: 14px; }
+.wifi-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); margin-top: 2px; }
+.wifi-slash { position: absolute; top: 0; left: 50%; width: 5px; height: 90px; background: #C0392B; transform: translateX(-50%) rotate(45deg); border-radius: 3px; opacity: 0.8; }
+
+.offline-tip { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; font-size: 13px; color: var(--text); text-align: center; min-width: 130px; }
+
+/* Shared */
+.err-title { font-family: var(--font-serif); font-style: italic; font-size: 30px; color: var(--blue-dark); margin-bottom: 12px; line-height: 1.25; }
+.err-desc { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 32px; max-width: 480px; }
+.err-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px; }
+.err-search { width: 100%; }
+</style>
+
+<script>
+initPage('errors');
+document.getElementById('footer').innerHTML = renderFooter();
+
+let retryCount = 0;
+
+function showError(type) {
+  document.querySelectorAll('.error-screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.err-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('err-' + type).classList.add('active');
+  document.getElementById('tab-' + type).classList.add('active');
+}
+
+function retryPage() {
+  retryCount++;
+  const btn = event.target;
+  btn.textContent = 'Reintentando...';
+  btn.disabled = true;
+  setTimeout(() => {
+    if (retryCount < 3) {
+      showToast('El servidor sigue sin responder. Intento ' + retryCount + '/3', 'warning');
+      btn.textContent = '🔄 Reintentar';
+      btn.disabled = false;
+    } else {
+      showToast('Redirigiendo al inicio...', 'info');
+      setTimeout(() => window.location.href = '01_home.html', 1000);
+    }
+  }, 1200);
+}
+
+function retryConnection() {
+  const btn = event.target;
+  btn.textContent = 'Verificando conexión...';
+  btn.disabled = true;
+  setTimeout(() => {
+    showToast('Conexión no encontrada. Verifica tu red.', 'error');
+    btn.textContent = '🔄 Reintentar conexión';
+    btn.disabled = false;
+  }, 1500);
+}
+
+// Read URL param ?type=404 etc.
+const urlParams = new URLSearchParams(window.location.search);
+const errType = urlParams.get('type') || '404';
+showError(errType);
+</script>
+</body>
+</html>

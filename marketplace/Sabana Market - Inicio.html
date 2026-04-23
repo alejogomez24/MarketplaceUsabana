@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Sabana Market — Inicio</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #1A3A6B; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    #__bundler_loading { position: fixed; bottom: 20px; right: 20px; font: 13px/1.4 -apple-system, BlinkMacSystemFont, sans-serif; color: #666; background: #fff; padding: 8px 14px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.12); z-index: 10000; }
+    #__bundler_thumbnail { position: fixed; inset: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #1A3A6B; z-index: 9999; }
+    #__bundler_thumbnail svg { width: 100%; height: 100%; object-fit: contain; }
+    #__bundler_placeholder { color: #999; font-size: 14px; }
+  </style>
+  <noscript>
+    <style>#__bundler_loading { display: none; }</style>
+    <div style="position:fixed;bottom:12px;left:12px;font:13px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;color:#999;background:rgba(255,255,255,0.9);padding:6px 12px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,0.08);z-index:10000;">
+      This page requires JavaScript to display.
+    </div>
+  </noscript>
+</head>
+<body>
+  <div id="__bundler_thumbnail">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <!-- Nav bar -->
+      <rect width="1200" height="72" fill="#1A3A6B"></rect>
+      <rect x="40" y="22" width="28" height="28" rx="6" fill="#C9A84C"></rect>
+      <text x="78" y="42" font-family="serif" font-style="italic" font-size="18" fill="white">Sabana Market</text>
+      <rect x="260" y="26" width="360" height="20" rx="10" fill="rgba(255,255,255,0.15)"></rect>
+      <!-- Hero -->
+      <rect y="72" width="1200" height="340" fill="#2C5FA8"></rect>
+      <text x="80" y="160" font-family="serif" font-style="italic" font-size="48" fill="white">Compra y vende</text>
+      <text x="80" y="215" font-family="serif" font-style="italic" font-size="48" fill="#F0D080">en La Sabana</text>
+      <rect x="80" y="240" width="380" height="44" rx="8" fill="white" opacity="0.9"></rect>
+      <!-- Stats cards -->
+      <rect x="720" y="110" width="220" height="80" rx="12" fill="rgba(255,255,255,0.1)"></rect>
+      <text x="740" y="158" font-size="32" font-weight="bold" fill="#F0D080">247</text>
+      <rect x="720" y="204" width="220" height="80" rx="12" fill="rgba(255,255,255,0.1)"></rect>
+      <text x="740" y="252" font-size="32" font-weight="bold" fill="#F0D080">1340</text>
+      <!-- Category chips -->
+      <rect x="40" y="460" width="200" height="100" rx="12" fill="#EEF4FF" stroke="#DDE3F0"></rect>
+      <text x="120" y="505" text-anchor="middle" font-size="32">📚</text>
+      <rect x="260" y="460" width="200" height="100" rx="12" fill="#F0FFF4" stroke="#DDE3F0"></rect>
+      <text x="360" y="505" text-anchor="middle" font-size="32">🎓</text>
+      <rect x="480" y="460" width="200" height="100" rx="12" fill="#FFFBEE" stroke="#DDE3F0"></rect>
+      <text x="580" y="505" text-anchor="middle" font-size="32">🧪</text>
+      <rect x="700" y="460" width="200" height="100" rx="12" fill="#FFF0F5" stroke="#DDE3F0"></rect>
+      <text x="800" y="505" text-anchor="middle" font-size="32">✏️</text>
+      <rect x="920" y="460" width="200" height="100" rx="12" fill="#F5F0FF" stroke="#DDE3F0"></rect>
+      <text x="1020" y="505" text-anchor="middle" font-size="32">🔧</text>
+      <!-- Product cards -->
+      <rect x="40" y="600" width="260" height="160" rx="12" fill="white" stroke="#DDE3F0"></rect>
+      <rect x="300" y="600" width="260" height="160" rx="12" fill="white" stroke="#DDE3F0"></rect>
+      <rect x="560" y="600" width="260" height="160" rx="12" fill="white" stroke="#DDE3F0"></rect>
+      <rect x="820" y="600" width="260" height="160" rx="12" fill="white" stroke="#DDE3F0"></rect>
+    </svg>
+  </div>
+  <div id="__bundler_loading">Unpacking...</div>
+
+  <script>
+    
+document.addEventListener('DOMContentLoaded', async function() {
+  const loading = document.getElementById('__bundler_loading');
+  function setStatus(msg) { if (loading) loading.textContent = msg; }
+
+  // Error sink persists across replaceWith since it's on window, not the DOM.
+  window.addEventListener('error', function(e) {
+    var p = document.body || document.documentElement;
+    var d = document.getElementById('__bundler_err') || p.appendChild(document.createElement('div'));
+    d.id = '__bundler_err';
+    d.style.cssText = 'position:fixed;bottom:12px;left:12px;right:12px;font:12px/1.4 ui-monospace,monospace;background:#2a1215;color:#ff8a80;padding:10px 14px;border-radius:8px;border:1px solid #5c2b2e;z-index:99999;white-space:pre-wrap;max-height:40vh;overflow:auto';
+    d.textContent = (d.textContent ? d.textContent + String.fromCharCode(10) : '') +
+      '[bundle] ' + (e.message || e.type) +
+      (e.filename ? ' (' + e.filename.slice(0, 60) + ':' + e.lineno + ')' : '');
+  }, true);
+
+  try {
+    const manifestEl = document.querySelector('script[type="__bundler/manifest"]');
+    const templateEl = document.querySelector('script[type="__bundler/template"]');
+    if (!manifestEl || !templateEl) {
+      setStatus('Error: missing bundle data');
+      console.error('[bundler] Missing script tags — manifestEl:', !!manifestEl, 'templateEl:', !!templateEl);
+      return;
+    }
+
+    const manifest = JSON.parse(manifestEl.textContent);
+    let template = JSON.parse(templateEl.textContent);
+
+    const uuids = Object.keys(manifest);
+    setStatus('Unpacking ' + uuids.length + ' assets...');
+
+    const blobUrls = {};
+    await Promise.all(uuids.map(async (uuid) => {
+      const entry = manifest[uuid];
+      try {
+        const binaryStr = atob(entry.data);
+        const bytes = new Uint8Array(binaryStr.length);
+        for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
+
+        let finalBytes = bytes;
+        if (entry.compressed) {
+          if (typeof DecompressionStream !== 'undefined') {
+            const ds = new DecompressionStream('gzip');
+            const writer = ds.writable.getWriter();
+            const reader = ds.readable.getReader();
+            writer.write(bytes);
+            writer.close();
+            const chunks = [];
+            let totalLen = 0;
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              chunks.push(value);
+              totalLen += value.length;
+            }
+            finalBytes = new Uint8Array(totalLen);
+            let offset = 0;
+            for (const chunk of chunks) { finalBytes.set(chunk, offset); offset += chunk.length; }
+          } else {
+            console.warn('DecompressionStream not available, asset ' + uuid + ' may not render');
+          }
+        }
+
+        blobUrls[uuid] = URL.createObjectURL(new Blob([finalBytes], { type: entry.mime }));
+      } catch (err) {
+        console.error('Failed to decode asset ' + uuid + ':', err);
+        blobUrls[uuid] = URL.createObjectURL(new Blob([], { type: entry.mime }));
+      }
+    }));
+
+    const extResEl = document.querySelector('script[type="__bundler/ext_resources"]');
+    const extResources = extResEl ? JSON.parse(extResEl.textContent) : [];
+    const resourceMap = {};
+    for (const entry of extResources) {
+      if (blobUrls[entry.uuid]) resourceMap[entry.id] = blobUrls[entry.uuid];
+    }
+
+    setStatus('Rendering...');
+    for (const uuid of uuids) template = template.split(uuid).join(blobUrls[uuid]);
+
+    // Strip integrity + crossorigin — blob URLs from a file:// document inherit
+    // a null origin, so crossorigin forces a CORS fetch that SRI then rejects.
+    // The manifest bytes are ours; SRI protects against CDN compromise, not this.
+    template = template.replace(/\s+integrity="[^"]*"/gi, '').replace(/\s+crossorigin="[^"]*"/gi, '');
+
+    const resourceScript = '<script>window.__resources = ' +
+      JSON.stringify(resourceMap).split('</' + 'script>').join('<\\/' + 'script>') +
+      ';</' + 'script>';
+    // Inject after <head> so the DOCTYPE stays first; prepending the script
+    // would push the parser into quirks mode. DOMParser always emits a <head>
+    // (synthesizing one if the source HTML omitted it) but may carry
+    // attributes through, so match the full opening tag. slice() rather than
+    // replace() keeps us clear of $-pattern substitution in resourceScript.
+    const headOpen = template.match(/<head[^>]*>/i);
+    if (headOpen) {
+      const i = headOpen.index + headOpen[0].length;
+      template = template.slice(0, i) + resourceScript + template.slice(i);
+    }
+
+    // Parse the template and swap the root element. Scripts inserted via
+    // DOMParser/replaceWith are inert per spec — re-create each with
+    // createElement so they execute, awaiting onload for src scripts to
+    // preserve ordering (React before ReactDOM before Babel before text/babel).
+    const doc = new DOMParser().parseFromString(template, 'text/html');
+    document.documentElement.replaceWith(doc.documentElement);
+    const dead = Array.from(document.scripts);
+    for (const old of dead) {
+      const s = document.createElement('script');
+      for (const a of old.attributes) s.setAttribute(a.name, a.value);
+      s.textContent = old.textContent;
+      // text/babel scripts with a src: fetch and inline. transformScriptTags
+      // does XHR against the src, but blob:null/ from a file:// origin is
+      // silently dropped. Inlining makes it a plain inline babel script,
+      // which transformScriptTags handles unconditionally.
+      if ((s.type === 'text/babel' || s.type === 'text/jsx') && s.src) {
+        const r = await fetch(s.src);
+        s.textContent = await r.text();
+        s.removeAttribute('src');
+      }
+      const p = s.src ? new Promise(function(r) { s.onload = s.onerror = r; }) : null;
+      old.replaceWith(s);
+      if (p) await p;
+    }
+    // Babel standalone auto-transforms type=text/babel on DOMContentLoaded,
+    // which fired before we swapped the document. Trigger manually if present.
+    if (window.Babel && typeof window.Babel.transformScriptTags === 'function') {
+      window.Babel.transformScriptTags();
+    }
+  } catch (err) {
+    setStatus('Error unpacking: ' + err.message);
+    console.error('Bundle unpack error:', err);
+  }
+});
+
+  </script>
+
+  <script type="__bundler/manifest">
+{"0507980a-e868-4dc2-8a7c-a52bc09f07a4":{"mime":"application/javascript","compressed":true,"data":"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"}}
+  </script>
+
+  <script type="__bundler/ext_resources">
+[]
+  </script>
+
+  <script type="__bundler/template">
+"<!DOCTYPE html>\n<html lang=\"es\"><head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Sabana Market — Inicio<\u002Ftitle>\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n  \n  <script src=\"0507980a-e868-4dc2-8a7c-a52bc09f07a4\"><\u002Fscript>\n<\u002Fhead>\n<body>\n<nav id=\"nav\"><\u002Fnav>\n\n<!-- HERO -->\n<section id=\"hero\">\n  <div class=\"hero-inner container\">\n    <div class=\"hero-text\">\n      <div class=\"hero-eyebrow\">Marketplace Institucional<\u002Fdiv>\n      <h1 class=\"hero-title\">Compra y vende dentro<br>de <em>La Sabana<\u002Fem><\u002Fh1>\n      <p class=\"hero-desc\">El espacio seguro de la comunidad estudiantil para intercambiar libros, tutorías, servicios y más — solo con correo @unisabana.edu.co<\u002Fp>\n      <div class=\"hero-search-wrap\">\n        <input type=\"text\" id=\"hero-search\" placeholder=\"¿Qué estás buscando?\" class=\"hero-search-input\">\n        <button class=\"hero-search-btn btn btn-gold-solid\" onclick=\"goSearch()\">Buscar<\u002Fbutton>\n      <\u002Fdiv>\n      <div class=\"hero-tags\">\n        <span onclick=\"goSearch('Cálculo')\">📘 Cálculo<\u002Fspan>\n        <span onclick=\"goSearch('tutoria')\">🎓 Tutorías<\u002Fspan>\n        <span onclick=\"goSearch('laboratorio')\">🧪 Lab<\u002Fspan>\n        <span onclick=\"goSearch('diseño')\">✏️ Diseño<\u002Fspan>\n      <\u002Fdiv>\n    <\u002Fdiv>\n    <div class=\"hero-stats\">\n      <div class=\"stat-card\">\n        <div class=\"stat-num\" data-target=\"247\">0<\u002Fdiv>\n        <div class=\"stat-label\">Productos activos<\u002Fdiv>\n      <\u002Fdiv>\n      <div class=\"stat-card\">\n        <div class=\"stat-num\" data-target=\"1340\">0<\u002Fdiv>\n        <div class=\"stat-label\">Estudiantes registrados<\u002Fdiv>\n      <\u002Fdiv>\n      <div class=\"stat-card\">\n        <div class=\"stat-num\" data-target=\"98\">0<\u002Fdiv>\n        <div class=\"stat-label\">% satisfacción<\u002Fdiv>\n      <\u002Fdiv>\n    <\u002Fdiv>\n  <\u002Fdiv>\n<\u002Fsection>\n\n<!-- CATEGORIES -->\n<section class=\"section\">\n  <div class=\"container\">\n    <h2 class=\"section-title\">Explorar por categoría<\u002Fh2>\n    <p class=\"section-sub\">Todo lo que necesitas para tu semestre en un solo lugar<\u002Fp>\n    <div class=\"categories-grid\" id=\"categories-grid\"><\u002Fdiv>\n  <\u002Fdiv>\n<\u002Fsection>\n\n<!-- FEATURED PRODUCTS -->\n<section class=\"section\" style=\"background:#fff; padding: 64px 0;\">\n  <div class=\"container\">\n    <div class=\"section-header\">\n      <div>\n        <h2 class=\"section-title\">Productos destacados<\u002Fh2>\n        <p class=\"section-sub\">Lo más reciente y popular de la comunidad<\u002Fp>\n      <\u002Fdiv>\n      <a href=\"02_listing.html\" class=\"btn btn-secondary\">Ver todos →<\u002Fa>\n    <\u002Fdiv>\n    <div class=\"grid-4\" id=\"products-grid\"><\u002Fdiv>\n  <\u002Fdiv>\n<\u002Fsection>\n\n<!-- CTA BANNER -->\n<section class=\"section\">\n  <div class=\"container\">\n    <div class=\"cta-banner\">\n      <div class=\"cta-text\">\n        <h2>¿Tienes algo que vender o<br><em>un servicio que ofrecer?<\u002Fem><\u002Fh2>\n        <p>Publica gratis en menos de 2 minutos y llega a más de 1.300 estudiantes de La Sabana<\u002Fp>\n        <div style=\"display:flex;gap:12px;flex-wrap:wrap;\">\n          <button class=\"btn btn-gold-solid btn-lg\" onclick=\"window.location.href='07_publish.html'\">✨ Publicar ahora<\u002Fbutton>\n          <button class=\"btn btn-secondary btn-lg\" style=\"border-color:rgba(255,255,255,0.4);color:#fff;\" onclick=\"window.location.href='02_listing.html'\">Explorar mercado<\u002Fbutton>\n        <\u002Fdiv>\n      <\u002Fdiv>\n      <div class=\"cta-illo\">\n        <div class=\"cta-float f1\">📚<\u002Fdiv>\n        <div class=\"cta-float f2\">💰<\u002Fdiv>\n        <div class=\"cta-float f3\">🎓<\u002Fdiv>\n        <div class=\"cta-float f4\">⭐<\u002Fdiv>\n      <\u002Fdiv>\n    <\u002Fdiv>\n  <\u002Fdiv>\n<\u002Fsection>\n\n<!-- RECENT SERVICES -->\n<section class=\"section\" style=\"background:#fff;padding:64px 0;\">\n  <div class=\"container\">\n    <div class=\"section-header\">\n      <div>\n        <h2 class=\"section-title\">Servicios recientes<\u002Fh2>\n        <p class=\"section-sub\">Estudiantes ofreciendo sus talentos<\u002Fp>\n      <\u002Fdiv>\n      <a href=\"02_listing.html?cat=servicios\" class=\"btn btn-secondary\">Ver servicios →<\u002Fa>\n    <\u002Fdiv>\n    <div class=\"grid-3\" id=\"services-grid\"><\u002Fdiv>\n  <\u002Fdiv>\n<\u002Fsection>\n\n<footer id=\"footer\"><\u002Ffooter>\n\n<style>\n/* Hero */\n#hero { background: linear-gradient(135deg, #1A3A6B 0%, #2C5FA8 60%, #1A3A6B 100%); padding: 80px 0 64px; overflow: hidden; position: relative; }\n#hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(201,168,76,0.12) 0%, transparent 60%); }\n.hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; position: relative; z-index: 1; }\n.hero-eyebrow { display: inline-block; background: rgba(201,168,76,0.2); color: var(--gold-light); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 5px 14px; border-radius: 20px; margin-bottom: 16px; border: 1px solid rgba(201,168,76,0.3); }\n.hero-title { font-size: 52px; color: #fff; line-height: 1.1; margin-bottom: 16px; }\n.hero-title em { color: var(--gold-light); }\n.hero-desc { color: rgba(255,255,255,0.75); font-size: 16px; line-height: 1.7; margin-bottom: 28px; max-width: 460px; }\n.hero-search-wrap { display: flex; gap: 0; margin-bottom: 20px; max-width: 480px; }\n.hero-search-input { flex: 1; padding: 14px 20px; border: none; border-radius: 10px 0 0 10px; font-family: var(--font-sans); font-size: 15px; outline: none; }\n.hero-search-btn { border-radius: 0 10px 10px 0; padding: 14px 24px; font-size: 15px; }\n.hero-tags { display: flex; gap: 10px; flex-wrap: wrap; }\n.hero-tags span { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); font-size: 13px; padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: background 0.2s; border: 1px solid rgba(255,255,255,0.15); }\n.hero-tags span:hover { background: rgba(255,255,255,0.2); }\n\n/* Stats */\n.hero-stats { display: flex; flex-direction: column; gap: 16px; }\n.stat-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 24px 28px; backdrop-filter: blur(8px); transition: transform 0.2s; }\n.stat-card:hover { transform: translateX(4px); }\n.stat-num { font-size: 42px; font-weight: 700; color: var(--gold-light); line-height: 1; font-family: var(--font-sans); }\n.stat-label { font-size: 13px; color: rgba(255,255,255,0.65); margin-top: 4px; }\n\n/* Categories */\n.categories-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }\n.cat-card { border-radius: var(--radius); padding: 28px 20px; text-align: center; cursor: pointer; transition: transform 0.22s, box-shadow 0.22s; border: 1px solid var(--border); }\n.cat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }\n.cat-icon { font-size: 48px; margin-bottom: 12px; display: block; }\n.cat-name { font-weight: 700; font-size: 15px; color: var(--blue-dark); margin-bottom: 4px; }\n.cat-count { font-size: 12px; color: var(--muted); }\n\n/* Section header */\n.section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 32px; }\n\n/* Product card add btn */\n.add-cart-btn { background: var(--blue-dark); color: #fff; border: none; border-radius: 8px; padding: 8px 14px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: var(--font-sans); }\n.add-cart-btn:hover { background: var(--blue-mid); }\n\n/* CTA Banner */\n.cta-banner { background: linear-gradient(135deg, #1A3A6B 0%, #2C5FA8 100%); border-radius: 20px; padding: 56px 64px; display: flex; align-items: center; justify-content: space-between; gap: 40px; overflow: hidden; position: relative; }\n.cta-banner::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 50%, rgba(201,168,76,0.15) 0%, transparent 55%); }\n.cta-text { position: relative; z-index: 1; }\n.cta-text h2 { font-size: 38px; color: #fff; margin-bottom: 14px; }\n.cta-text em { color: var(--gold-light); }\n.cta-text p { color: rgba(255,255,255,0.75); font-size: 15px; margin-bottom: 28px; max-width: 420px; line-height: 1.6; }\n.cta-illo { position: relative; width: 200px; height: 160px; flex-shrink: 0; }\n.cta-float { position: absolute; font-size: 40px; animation: floatAnim 3s ease-in-out infinite; }\n.f1 { top: 0; left: 20px; animation-delay: 0s; }\n.f2 { top: 40px; right: 0; animation-delay: 0.8s; }\n.f3 { bottom: 10px; left: 0; animation-delay: 1.6s; }\n.f4 { bottom: 20px; right: 30px; animation-delay: 2.4s; }\n@keyframes floatAnim { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }\n\n/* Service card */\n.service-card { border-radius: var(--radius); padding: 24px; background: #fff; border: 1px solid var(--border); cursor: pointer; transition: transform 0.22s, box-shadow 0.22s; }\n.service-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }\n.service-card-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }\n.service-card-icon { font-size: 36px; width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }\n.service-card-title { font-weight: 700; font-size: 15px; color: var(--blue-dark); margin-bottom: 4px; }\n.service-card-seller { font-size: 12px; color: var(--muted); }\n.service-card-desc { font-size: 13px; color: var(--text); line-height: 1.5; margin-bottom: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }\n.service-card-footer { display: flex; align-items: center; justify-content: space-between; }\n.service-price { font-size: 18px; font-weight: 700; color: var(--blue-dark); }\n\n@media(max-width:900px){\n  .hero-inner { grid-template-columns: 1fr; }\n  .hero-stats { flex-direction: row; flex-wrap: wrap; }\n  .categories-grid { grid-template-columns: repeat(3,1fr); }\n}\n<\u002Fstyle>\n\n<script>\ninitPage('home');\n\nfunction goSearch(q) {\n  const query = q || document.getElementById('hero-search').value;\n  window.location.href = '02_listing.html' + (query ? '?q=' + encodeURIComponent(query) : '');\n}\n\ndocument.getElementById('hero-search').addEventListener('keydown', e => {\n  if (e.key === 'Enter') goSearch();\n});\n\n// Render categories\nconst catGrid = document.getElementById('categories-grid');\ncatGrid.innerHTML = CATEGORIES.map(c => `\n  <div class=\"cat-card\" style=\"background:${c.color}\" onclick=\"window.location.href='02_listing.html?cat=${c.id}'\">\n    <span class=\"cat-icon\">${c.emoji}<\u002Fspan>\n    <div class=\"cat-name\">${c.name}<\u002Fdiv>\n    <div class=\"cat-count\">${c.count} publicaciones<\u002Fdiv>\n  <\u002Fdiv>\n`).join('');\n\n// Render products\nconst products = State.products;\nconst prodGrid = document.getElementById('products-grid');\nprodGrid.innerHTML = products.slice(0, 4).map(p => renderProductCard(p)).join('');\n\n// Render services\nconst services = products.filter(p => p.category === 'servicios' || p.category === 'tutorias').slice(0, 3);\ndocument.getElementById('services-grid').innerHTML = services.map(p => `\n  <div class=\"service-card\" onclick=\"window.location.href='03_product.html?id=${p.id}'\">\n    <div class=\"service-card-top\">\n      <div class=\"service-card-icon\" style=\"background:${p.bg}\">${p.emoji}<\u002Fdiv>\n      <div>\n        <div class=\"service-card-title\">${p.title}<\u002Fdiv>\n        <div class=\"service-card-seller\">${p.sellerName} · ${p.sellerCareer}<\u002Fdiv>\n      <\u002Fdiv>\n    <\u002Fdiv>\n    <div class=\"service-card-desc\">${p.description}<\u002Fdiv>\n    <div class=\"service-card-footer\">\n      <div class=\"service-price\">${formatPrice(p.price)}<\u002Fdiv>\n      <div style=\"display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted)\">\n        ${renderStars(p.rating)} <span>(${p.reviews})<\u002Fspan>\n      <\u002Fdiv>\n    <\u002Fdiv>\n  <\u002Fdiv>\n`).join('');\n\nfunction renderProductCard(p) {\n  const badgeMap = { 'Nuevo': 'badge-nuevo', 'Popular': 'badge-popular', 'Oferta': 'badge-oferta' };\n  return `\n  <div class=\"card product-card\" onclick=\"window.location.href='03_product.html?id=${p.id}'\">\n    <div class=\"product-card-img\" style=\"background:${p.bg}\">\n      ${p.badge ? `<span class=\"badge ${badgeMap[p.badge]||'badge-popular'}\" style=\"position:absolute;top:12px;left:12px;\">${p.badge}<\u002Fspan>` : ''}\n      <span style=\"font-size:64px\">${p.emoji}<\u002Fspan>\n      ${p.stock === 0 ? `<span class=\"badge badge-agotado\" style=\"position:absolute;top:12px;right:12px;\">Agotado<\u002Fspan>` : ''}\n    <\u002Fdiv>\n    <div class=\"product-card-body\">\n      <div class=\"product-card-meta\">\n        <span class=\"badge ${p.estado==='nuevo'?'badge-nuevo':'badge-usado'}\">${p.estado==='nuevo'?'Nuevo':'Usado'}<\u002Fspan>\n        <span class=\"badge badge-popular\" style=\"background:#f4f6fb;color:var(--muted)\">${CATEGORIES.find(c=>c.id===p.category)?.name||p.category}<\u002Fspan>\n      <\u002Fdiv>\n      <div class=\"product-card-title\">${p.title}<\u002Fdiv>\n      <div style=\"display:flex;align-items:baseline;gap:8px;margin-bottom:4px;\">\n        <span class=\"product-card-price\">${formatPrice(p.price)}<\u002Fspan>\n        ${p.priceOld ? `<span class=\"product-card-price-old\">${formatPrice(p.priceOld)}<\u002Fspan>` : ''}\n      <\u002Fdiv>\n      <div class=\"product-card-footer\">\n        <div class=\"product-card-rating\">\n          ${renderStars(p.rating)} <span style=\"margin-left:4px;\">${p.rating} (${p.reviews})<\u002Fspan>\n        <\u002Fdiv>\n        <button class=\"add-cart-btn\" onclick=\"event.stopPropagation();addToCart(${p.id})\" ${p.stock===0?'disabled':''}>\n          ${p.stock===0?'Agotado':'+ Carrito'}\n        <\u002Fbutton>\n      <\u002Fdiv>\n    <\u002Fdiv>\n  <\u002Fdiv>`;\n}\n\nfunction addToCart(productId) {\n  const p = State.products.find(x => x.id === productId);\n  if (!p) return;\n  if (!State.user) { showToast('Inicia sesión para agregar al carrito', 'warning'); return; }\n  State.addToCart(p, 1);\n  showToast(`\"${p.title}\" agregado al carrito 🛒`, 'success');\n}\n\n// Animate stats\nfunction animateCounters() {\n  document.querySelectorAll('.stat-num[data-target]').forEach(el => {\n    const target = parseInt(el.dataset.target);\n    const suffix = el.dataset.target.endsWith('%') ? '%' : '';\n    let current = 0;\n    const step = Math.ceil(target / 60);\n    const timer = setInterval(() => {\n      current = Math.min(current + step, target);\n      el.textContent = current.toLocaleString('es-CO') + suffix;\n      if (current >= target) clearInterval(timer);\n    }, 25);\n  });\n}\n\n// Footer\ndocument.getElementById('footer').innerHTML = renderFooter();\n\n// Start animation after a short delay\nsetTimeout(animateCounters, 400);\n<\u002Fscript>\n\n\n<\u002Fbody><\u002Fhtml>"
+  </script>
+</body>
+</html>

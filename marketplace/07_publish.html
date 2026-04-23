@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publicar producto — Sabana Market</title>
+  <script src="shared.js"></script>
+</head>
+<body>
+<nav id="nav"></nav>
+
+<div class="container" style="padding-top:40px;padding-bottom:80px;">
+  <div style="max-width:900px;margin:0 auto;">
+    <div style="margin-bottom:32px;">
+      <h1 style="font-size:34px;color:var(--blue-dark);margin-bottom:6px;">Publicar producto</h1>
+      <p style="color:var(--muted);font-size:15px;">Llega a más de 1.300 estudiantes de La Sabana</p>
+    </div>
+
+    <div class="publish-layout">
+      <!-- FORM -->
+      <div class="publish-form-wrap">
+        <form id="publish-form" novalidate onsubmit="submitProduct(event)">
+
+          <div class="form-section">
+            <div class="form-section-title">Información básica</div>
+            <div class="form-group">
+              <label class="form-label">Título del producto <span style="color:#C0392B">*</span></label>
+              <input type="text" id="f-title" class="form-input" placeholder="Ej: Cálculo Diferencial — Stewart 8va Ed." maxlength="80" oninput="updatePreview()">
+              <div class="form-error" id="f-title-error"></div>
+              <div style="text-align:right;font-size:11px;color:var(--muted);margin-top:3px;"><span id="title-count">0</span>/80</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Descripción <span style="color:#C0392B">*</span></label>
+              <textarea id="f-desc" class="form-input" placeholder="Describe el producto: estado, edición, incluye accesorios, etc." rows="4" maxlength="500" oninput="updatePreview()"></textarea>
+              <div class="form-error" id="f-desc-error"></div>
+              <div style="text-align:right;font-size:11px;color:var(--muted);margin-top:3px;"><span id="desc-count">0</span>/500</div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Precio y categoría</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="form-group">
+                <label class="form-label">Precio (COP) <span style="color:#C0392B">*</span></label>
+                <div style="position:relative;">
+                  <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;">$</span>
+                  <input type="number" id="f-price" class="form-input" placeholder="0" min="0" style="padding-left:28px;" oninput="updatePreview()">
+                </div>
+                <div class="form-error" id="f-price-error"></div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Precio anterior (opcional)</label>
+                <div style="position:relative;">
+                  <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;">$</span>
+                  <input type="number" id="f-price-old" class="form-input" placeholder="0" min="0" style="padding-left:28px;" oninput="updatePreview()">
+                </div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="form-group">
+                <label class="form-label">Categoría <span style="color:#C0392B">*</span></label>
+                <select id="f-category" class="form-input" onchange="updatePreview()">
+                  <option value="">Seleccionar categoría</option>
+                  <option value="libros">📚 Libros</option>
+                  <option value="tutorias">🎓 Tutorías</option>
+                  <option value="laboratorio">🧪 Laboratorio</option>
+                  <option value="diseno">✏️ Diseño</option>
+                  <option value="servicios">🔧 Servicios</option>
+                </select>
+                <div class="form-error" id="f-category-error"></div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Stock disponible <span style="color:#C0392B">*</span></label>
+                <input type="number" id="f-stock" class="form-input" placeholder="1" min="0" value="1" oninput="updatePreview()">
+                <div class="form-error" id="f-stock-error"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Estado del producto</div>
+            <div style="display:flex;gap:12px;">
+              <label class="estado-option" id="opt-nuevo">
+                <input type="radio" name="estado" value="nuevo" checked onchange="updatePreview()">
+                <div class="estado-card">
+                  <div style="font-size:24px;margin-bottom:6px;">✨</div>
+                  <div style="font-weight:700;font-size:14px">Nuevo</div>
+                  <div style="font-size:12px;color:var(--muted)">Sin uso previo</div>
+                </div>
+              </label>
+              <label class="estado-option" id="opt-usado">
+                <input type="radio" name="estado" value="usado" onchange="updatePreview()">
+                <div class="estado-card">
+                  <div style="font-size:24px;margin-bottom:6px;">📖</div>
+                  <div style="font-weight:700;font-size:14px">Usado</div>
+                  <div style="font-size:12px;color:var(--muted)">En buen estado</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Imagen del producto</div>
+            <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Selecciona un emoji representativo para tu producto</p>
+            <div class="emoji-grid" id="emoji-grid"></div>
+            <div class="form-error" id="f-emoji-error"></div>
+          </div>
+
+          <div style="display:flex;gap:12px;margin-top:8px;">
+            <button type="button" class="btn btn-secondary btn-lg" onclick="window.history.back()">Cancelar</button>
+            <button type="submit" class="btn btn-primary btn-lg" id="publish-btn" style="flex:1;justify-content:center;">✨ Publicar producto</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- PREVIEW -->
+      <div class="publish-preview-wrap">
+        <div class="preview-label">Vista previa del card</div>
+        <div class="card product-card" id="preview-card" style="pointer-events:none;max-width:260px;">
+          <div class="product-card-img" id="prev-img" style="background:#EEF4FF;">
+            <span id="prev-emoji" style="font-size:64px">📦</span>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-meta">
+              <span class="badge badge-nuevo" id="prev-estado-badge">Nuevo</span>
+              <span class="badge" id="prev-cat-badge" style="background:#f4f6fb;color:var(--muted)">Categoría</span>
+            </div>
+            <div class="product-card-title" id="prev-title" style="color:var(--muted);font-style:italic;">Título del producto</div>
+            <div style="display:flex;align-items:baseline;gap:8px;margin:6px 0;">
+              <span class="product-card-price" id="prev-price" style="color:var(--muted)">$0</span>
+              <span class="product-card-price-old" id="prev-old" style="display:none"></span>
+            </div>
+            <div class="product-card-footer">
+              <div class="product-card-rating">★★★★★ <span style="font-size:12px;color:var(--muted);margin-left:4px;">Nuevo</span></div>
+              <button class="add-cart-btn" disabled>+ Carrito</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:24px;background:var(--bg);border-radius:10px;padding:16px;font-size:13px;color:var(--muted);line-height:1.6;">
+          <strong style="color:var(--text);display:block;margin-bottom:8px;">💡 Consejos para vender más rápido</strong>
+          <ul style="padding-left:16px;display:flex;flex-direction:column;gap:6px;">
+            <li>Escribe un título claro con el nombre exacto y edición</li>
+            <li>Menciona el estado real y cualquier detalle importante</li>
+            <li>Pon un precio justo comparando con el mercado</li>
+            <li>Responde mensajes rápidamente</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer id="footer"></footer>
+
+<style>
+.publish-layout { display: grid; grid-template-columns: 1fr 300px; gap: 40px; align-items: start; }
+.publish-form-wrap { }
+.form-section { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 20px; }
+.form-section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-bottom: 20px; }
+
+.estado-option { cursor: pointer; }
+.estado-option input { display: none; }
+.estado-card { border: 2px solid var(--border); border-radius: 10px; padding: 16px 24px; text-align: center; transition: all 0.2s; background: #fff; }
+.estado-option input:checked + .estado-card { border-color: var(--blue-dark); background: #EEF4FF; }
+.estado-card:hover { border-color: var(--blue-light); }
+
+.emoji-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; margin-bottom: 8px; }
+.emoji-opt { font-size: 24px; width: 44px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid transparent; background: var(--bg); transition: all 0.15s; }
+.emoji-opt:hover { background: #DDE3F0; }
+.emoji-opt.selected { border-color: var(--blue-dark); background: #EEF4FF; }
+
+.publish-preview-wrap { position: sticky; top: calc(var(--nav-h) + 20px); }
+.preview-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-bottom: 14px; }
+
+.add-cart-btn { background: var(--blue-dark); color: #fff; border: none; border-radius: 8px; padding: 8px 14px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: var(--font-sans); }
+
+@media(max-width:768px) {
+  .publish-layout { grid-template-columns: 1fr; }
+  .publish-preview-wrap { position: static; }
+}
+</style>
+
+<script>
+initPage('publish');
+document.getElementById('footer').innerHTML = renderFooter();
+
+// Require login
+if (!State.user) {
+  showToast('Debes iniciar sesión para publicar', 'warning');
+  window.location.href = '05_login.html?redirect=07_publish.html';
+}
+
+// Check edit mode
+const urlParams = new URLSearchParams(window.location.search);
+const editId = urlParams.get('edit') ? parseInt(urlParams.get('edit')) : null;
+let editProduct = null;
+
+if (editId) {
+  editProduct = State.products.find(p => p.id === editId);
+  if (editProduct) {
+    document.querySelector('h1').textContent = 'Editar producto';
+    document.getElementById('publish-btn').textContent = '💾 Guardar cambios';
+    // Fill form
+    document.getElementById('f-title').value = editProduct.title;
+    document.getElementById('f-desc').value = editProduct.description;
+    document.getElementById('f-price').value = editProduct.price;
+    if (editProduct.priceOld) document.getElementById('f-price-old').value = editProduct.priceOld;
+    document.getElementById('f-category').value = editProduct.category;
+    document.getElementById('f-stock').value = editProduct.stock;
+    document.querySelector(`input[name="estado"][value="${editProduct.estado}"]`).checked = true;
+    selectedEmoji = editProduct.emoji;
+    selectedBg = editProduct.bg;
+    setTimeout(updatePreview, 50);
+  }
+}
+
+const EMOJIS = [
+  { e: '📚', bg: '#EEF4FF' }, { e: '📘', bg: '#EEF4FF' }, { e: '📗', bg: '#F0FFF4' }, { e: '📙', bg: '#FFFBEE' },
+  { e: '📝', bg: '#F8F0FF' }, { e: '🔬', bg: '#F0FFF4' }, { e: '🧪', bg: '#FFFBEE' }, { e: '⚗️', bg: '#FFFBEE' },
+  { e: '💻', bg: '#EEF4FF' }, { e: '🖥️', bg: '#EEF4FF' }, { e: '⌨️', bg: '#F4F4F4' }, { e: '🖱️', bg: '#F4F4F4' },
+  { e: '🎓', bg: '#F0FFF4' }, { e: '✏️', bg: '#FFF0F5' }, { e: '🖌️', bg: '#FFF0F5' }, { e: '🎨', bg: '#FFF0F5' },
+  { e: '🔧', bg: '#F5F0FF' }, { e: '⚙️', bg: '#F5F0FF' }, { e: '🛠️', bg: '#F5F0FF' }, { e: '📐', bg: '#EEF4FF' },
+  { e: '🗣️', bg: '#F0FFF4' }, { e: '🎯', bg: '#FFFBEE' }, { e: '📊', bg: '#EEF4FF' }, { e: '📈', bg: '#EEF4FF' },
+];
+
+let selectedEmoji = editProduct?.emoji || '📦';
+let selectedBg = editProduct?.bg || '#EEF4FF';
+
+const grid = document.getElementById('emoji-grid');
+grid.innerHTML = EMOJIS.map((e, i) => `
+  <div class="emoji-opt ${selectedEmoji === e.e ? 'selected' : ''}" onclick="selectEmoji('${e.e}','${e.bg}',this)" title="${e.e}">${e.e}</div>
+`).join('');
+
+function selectEmoji(emoji, bg, el) {
+  selectedEmoji = emoji;
+  selectedBg = bg;
+  document.querySelectorAll('.emoji-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  updatePreview();
+}
+
+function updatePreview() {
+  const title = document.getElementById('f-title').value;
+  const price = parseInt(document.getElementById('f-price').value) || 0;
+  const priceOld = parseInt(document.getElementById('f-price-old').value) || 0;
+  const cat = document.getElementById('f-category').value;
+  const estado = document.querySelector('input[name="estado"]:checked').value;
+
+  // Count chars
+  document.getElementById('title-count').textContent = title.length;
+  document.getElementById('desc-count').textContent = document.getElementById('f-desc').value.length;
+
+  // Update preview
+  document.getElementById('prev-emoji').textContent = selectedEmoji;
+  document.getElementById('prev-img').style.background = selectedBg;
+  document.getElementById('prev-title').textContent = title || 'Título del producto';
+  document.getElementById('prev-title').style.color = title ? 'var(--text)' : 'var(--muted)';
+  document.getElementById('prev-price').textContent = price ? formatPrice(price) : '$0';
+  document.getElementById('prev-price').style.color = price ? 'var(--blue-dark)' : 'var(--muted)';
+
+  const oldEl = document.getElementById('prev-old');
+  if (priceOld > price && priceOld > 0) { oldEl.textContent = formatPrice(priceOld); oldEl.style.display = 'inline'; }
+  else { oldEl.style.display = 'none'; }
+
+  const estadoBadge = document.getElementById('prev-estado-badge');
+  estadoBadge.textContent = estado === 'nuevo' ? 'Nuevo' : 'Usado';
+  estadoBadge.className = `badge ${estado === 'nuevo' ? 'badge-nuevo' : 'badge-usado'}`;
+
+  const catBadge = document.getElementById('prev-cat-badge');
+  catBadge.textContent = CATEGORIES.find(c => c.id === cat)?.name || 'Categoría';
+}
+
+function setError(id, msg) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  el.style.display = msg ? 'block' : 'none';
+  const input = document.getElementById(id.replace('-error', ''));
+  if (input) input.classList.toggle('error', !!msg);
+}
+
+function submitProduct(e) {
+  e.preventDefault();
+  const title = document.getElementById('f-title').value.trim();
+  const desc = document.getElementById('f-desc').value.trim();
+  const price = parseFloat(document.getElementById('f-price').value);
+  const priceOld = parseFloat(document.getElementById('f-price-old').value) || null;
+  const cat = document.getElementById('f-category').value;
+  const stock = parseInt(document.getElementById('f-stock').value);
+  const estado = document.querySelector('input[name="estado"]:checked').value;
+  let valid = true;
+
+  setError('f-title-error',''); setError('f-desc-error',''); setError('f-price-error','');
+  setError('f-category-error',''); setError('f-stock-error',''); setError('f-emoji-error','');
+
+  if (!title || title.length < 5) { setError('f-title-error','El título debe tener al menos 5 caracteres'); valid = false; }
+  if (!desc || desc.length < 20) { setError('f-desc-error','La descripción debe tener al menos 20 caracteres'); valid = false; }
+  if (!price || price < 0) { setError('f-price-error','Ingresa un precio válido mayor a 0'); valid = false; }
+  if (price < 0) { setError('f-price-error','El precio no puede ser negativo'); valid = false; }
+  if (!cat) { setError('f-category-error','Selecciona una categoría'); valid = false; }
+  if (isNaN(stock) || stock < 0) { setError('f-stock-error','Ingresa un stock válido'); valid = false; }
+  if (!selectedEmoji || selectedEmoji === '📦') { setError('f-emoji-error','Selecciona un emoji para tu producto'); valid = false; }
+
+  if (!valid) { window.scrollTo({top:0,behavior:'smooth'}); return; }
+
+  const btn = document.getElementById('publish-btn');
+  btn.textContent = 'Publicando...';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    const user = State.user;
+    if (editProduct) {
+      const products = State.products;
+      const idx = products.findIndex(p => p.id === editId);
+      if (idx >= 0) {
+        products[idx] = { ...products[idx], title, description: desc, price, priceOld, category: cat, stock, estado, emoji: selectedEmoji, bg: selectedBg };
+        State.products = products;
+      }
+      showToast('✅ Producto actualizado exitosamente', 'success');
+    } else {
+      const newProduct = {
+        id: Date.now(), title, description: desc, price, priceOld, category: cat, stock, estado,
+        emoji: selectedEmoji, bg: selectedBg, sellerId: user.id, sellerName: user.name,
+        sellerCareer: user.career, sellerRating: user.rating||4.5, sellerAvatar: user.avatar,
+        rating: 0, reviews: 0, badge: 'Nuevo', tags: [cat, estado],
+        images: [selectedEmoji, selectedEmoji, selectedEmoji]
+      };
+      State.addProduct(newProduct);
+      State.addNotification(`¡Tu producto "${title}" fue publicado! 🎉`, 'info');
+      showToast('🎉 ¡Producto publicado exitosamente!', 'success');
+    }
+    setTimeout(() => window.location.href = '06_profile.html?tab=productos', 1000);
+  }, 800);
+}
+
+updatePreview();
+</script>
+</body>
+</html>
